@@ -12,10 +12,13 @@ const now = dayjs();
 const currentDateDisp = $('#current-date');
 const newProject = $('#new-project');
 const learnMore = $('#learn-more');
-var tableCard = $('#holidayCard')
+const tableCard = $('#holidayCard');
+
+const prevButton = $("#slide-arrow-prev");
+const nextButton = $("#slide-arrow-next");
 
 
-currentDateDisp.now.format('MMMM D, YYYY');
+// currentDateDisp.now.format('MMMM D, YYYY');
 
 newProject.on('click', function(){
     location.assign('./project.html')
@@ -25,7 +28,7 @@ learnMore.on('click', function() {
     var holidayName = $('#holiday-OTD');
     var urlBuild = 'en.wikipedia.org/wiki/' + holidayName;
     window.open(urlBuild, '_blank');
-})
+});
 
 function getApi() {
    var requestUrl = 'https://date.nager.at/api/v3/NextPublicHolidaysWorldwide';
@@ -37,10 +40,14 @@ function getApi() {
       .then(function (data) {
          console.log(data)
          for (var i = 0; i < data.length; i++) {
+            var table = document.createElement('table');
+            var tableBody = document.createElement('tbody');
             var createTableRow = document.createElement('tr');
             var tableData = document.createElement('td');
             var holidayHeader = document.createElement('h2');
             var holidayOrigin = document.createElement('h3');
+
+            table.setAttribute('class', 'carouselCard');
 
             holidayHeader.textContent = data[i].name;
             holidayOrigin.textContent = data[i].countryCode;
@@ -48,9 +55,21 @@ function getApi() {
             tableData.appendChild(holidayHeader);
             tableData.appendChild(holidayOrigin);
             createTableRow.appendChild(tableData);
-            tableCard.append(createTableRow);
+            tableBody.appendChild(createTableRow);
+            table.appendChild(tableBody);
+            tableCard.append(table);
+            
             if (i >= 4) return
          }
       })
 }
 getApi();
+const slide = $(".carouselCard");
+nextButton.on("click", () => {
+   const slideWidth = slide.clientWidth;
+   tableCard.scrollLeft += slideWidth;
+ });
+ prevButton.on("click", () => {
+   const slideWidth = slide.clientWidth;
+   tableCard.scrollLeft -= slideWidth;
+ });
