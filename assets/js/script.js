@@ -14,18 +14,27 @@ const newProject = $('#new-project');
 const learnMore = $('#learn-more');
 var tableCard = $('#holidayCard')
 
+// retrieving the data from local storage
+const savedProjectData = JSON.parse(localStorage.getItem('projectData')) || {};
 
 currentDateDisp.now.format('MMMM D, YYYY');
 
 newProject.on('click', function(){
+    // saving new project data to the local storage
+    savedProjectData.lastVisited = dayjs().format('MMMM D, YYYY');
+    localStorage.setItem('projectData', JSON.stringify(savedProjectData));
+
     location.assign('./project.html')
+    
 });
 
 learnMore.on('click', function() {
     var holidayName = $('#holiday-OTD');
     var urlBuild = 'en.wikipedia.org/wiki/' + holidayName;
     window.open(urlBuild, '_blank');
+    
 })
+
 
 function getApi() {
    var requestUrl = 'https://date.nager.at/api/v3/NextPublicHolidaysWorldwide';
@@ -54,3 +63,7 @@ function getApi() {
       })
 }
 getApi();
+
+
+
+

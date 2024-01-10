@@ -25,6 +25,9 @@ function handleSearchFormSubmit(event) {
     return;
   }
 
+  // Store the search input value in local storage
+  $.localStorage.setItem('searchInput', searchInputVal);
+
   // Build the url for sending the user to the second web page
   var queryString = './search-results.html?q=' + searchInputVal + '&format=' + formatInputVal;
 
@@ -33,9 +36,23 @@ function handleSearchFormSubmit(event) {
   location.assign(queryString);
 
   console.log("ok")
+
 }
 
 searchFormEl.addEventListener('submit', handleSearchFormSubmit);
 ;
+
+
+
+
+
+// function to retrieve saved data
+
+function retrieveSavedData() {
+    var retrieveSearchInput = $.localStorage.getItem('searchInput');
+    if (retrieveSearchInput) {
+        console.log('retrieved search input'), retrieveSearchInput
+    }
+}
 
 
