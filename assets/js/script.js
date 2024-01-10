@@ -1,4 +1,6 @@
 const today = dayjs()
+var tableCard = $('#holidayCard')
+console.log(tableCard)
 
 
 
@@ -12,9 +14,20 @@ function getApi() {
           return response.json();
        })
        .then(function (data){
-        console.log(data)
-        const nextHoliday = data[0]
-        console.log(nextHoliday)
+        console.log(data);
+        console.log(data[0].name);
+
+        var createTableRow = document.createElement('tr');
+        var tableData = document.createElement('td');
+        var holidayHeader = document.createElement('h2');
+
+        holidayHeader.textContent = data[0].name; 
+
+        tableData.appendChild(holidayHeader);
+        createTableRow.appendChild(tableData);
+        tableCard.append(createTableRow);
+
+        console.log(tableCard);
        })
  }
  getApi()
