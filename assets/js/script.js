@@ -17,14 +17,14 @@ const tableCard = $('#holidayCard');
 
 // currentDateDisp.now.format('MMMM D, YYYY');
 
-newProject.on('click', function(){
-    location.assign('./project.html')
+newProject.on('click', function () {
+   location.assign('./project.html')
 });
 
-learnMore.on('click', function() {
-    var holidayName = $('#holiday-OTD');
-    var urlBuild = 'en.wikipedia.org/wiki/' + holidayName;
-    window.open(urlBuild, '_blank');
+learnMore.on('click', function () {
+   var holidayName = $('#holiday-OTD');
+   var urlBuild = 'en.wikipedia.org/wiki/' + holidayName;
+   window.open(urlBuild, '_blank');
 });
 
 function getApi() {
@@ -44,11 +44,30 @@ function getApi() {
             var tableData = document.createElement('td');
             var holidayHeader = document.createElement('h2');
             var holidayOrigin = document.createElement('h3');
+            var learnMore = document.createElement('a');
+
+            var url = "https://en.wikipedia.org/w/api.php";
+
+            var params = new URLSearchParams({
+               action: "query",
+               list: "search",
+               srsearch: data[i].name,
+               format: "json",
+            })
+
+            fetch(`${url}?${params}`)
+               .then(function (response) { return response.json(); })
+               .then(function (response) {
+                  if (response.query.search[0].title === "Nelson Mandela") {
+                     console.log("Your search page 'Nelson Mandela' exists on English Wikipedia");
+                  }
+               })
+               .catch(function (error) { console.log(error); });
 
             table.setAttribute('class', 'd-block w-100');
-            if (i === 0){
+            if (i === 0) {
                carouselItem.setAttribute('class', 'carousel-item active');
-            } else { 
+            } else {
                carouselItem.setAttribute('class', 'carousel-item');
             };
 
@@ -62,9 +81,9 @@ function getApi() {
             table.appendChild(tableBody);
             carouselItem.appendChild(table);
             tableCard.append(carouselItem);
-            
+
             if (i >= 4) return
-            if (i === 0){
+            if (i === 0) {
 
             }
          }
