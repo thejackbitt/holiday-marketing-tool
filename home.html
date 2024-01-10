@@ -25,31 +25,41 @@
         </div>
     </div>
     <div class="container-fluid d-flex flex-column flex-lg-row">
-    <div class="d-flex align-items-center flex-column">
-        <button class="btn btn-primary">+New Project</button>
-    <table>
-       <tbody id="holidayCard">
-       </tbody>
-    </table>
-    </div>
-    <ul id="filesList" class="list-group scrollable-list d-flex flex-column flex-grow-1">
-        <li class="list-group-item">
-            <h3>Placeholder Name</h3>
-            <p><i>Last Updated: mm/dd/yy</i></p>
-        </li>
-        <li class="list-group-item">
-            <h3>Placeholder Name</h3>
-            <p><i>Last Updated: mm/dd/yy</i></p>
-        </li>
-        <li class="list-group-item">
-            <h3>Placeholder Name</h3>
-            <p><i>Last Updated: mm/dd/yy</i></p>
-        </li>
-        <li class="list-group-item">
-            <h3>Placeholder Name</h3>
-            <p><i>Last Updated: mm/dd/yy</i></p>
-        </li>
-    </ul>
+        <div class="d-flex align-items-center flex-column">
+            <button class="btn btn-primary">+New Project</button>
+            <div class = "carouselWrapper">
+                <div id = "holidayCard" class="carousel slide">
+                    <div class="carousel-inner">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#holidayCard" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#holidayCard" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+            </div>
+        </div>
+        <ul id="filesList" class="list-group scrollable-list d-flex flex-column flex-grow-1">
+            <li class="list-group-item">
+                <h3>Placeholder Name</h3>
+                <p><i>Last Updated: mm/dd/yy</i></p>
+            </li>
+            <li class="list-group-item">
+                <h3>Placeholder Name</h3>
+                <p><i>Last Updated: mm/dd/yy</i></p>
+            </li>
+            <li class="list-group-item">
+                <h3>Placeholder Name</h3>
+                <p><i>Last Updated: mm/dd/yy</i></p>
+            </li>
+            <li class="list-group-item">
+                <h3>Placeholder Name</h3>
+                <p><i>Last Updated: mm/dd/yy</i></p>
+            </li>
+        </ul>
     </div>
     <footer class="container-fluid">
 

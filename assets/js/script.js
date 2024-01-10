@@ -14,9 +14,6 @@ const newProject = $('#new-project');
 const learnMore = $('#learn-more');
 const tableCard = $('#holidayCard');
 
-const prevButton = $("#slide-arrow-prev");
-const nextButton = $("#slide-arrow-next");
-
 
 // currentDateDisp.now.format('MMMM D, YYYY');
 
@@ -40,6 +37,7 @@ function getApi() {
       .then(function (data) {
          console.log(data)
          for (var i = 0; i < data.length; i++) {
+            var carouselItem = document.createElement('div');
             var table = document.createElement('table');
             var tableBody = document.createElement('tbody');
             var createTableRow = document.createElement('tr');
@@ -47,7 +45,12 @@ function getApi() {
             var holidayHeader = document.createElement('h2');
             var holidayOrigin = document.createElement('h3');
 
-            table.setAttribute('class', 'carouselCard');
+            table.setAttribute('class', 'd-block w-100');
+            if (i === 0){
+               carouselItem.setAttribute('class', 'carousel-item active');
+            } else { 
+               carouselItem.setAttribute('class', 'carousel-item');
+            };
 
             holidayHeader.textContent = data[i].name;
             holidayOrigin.textContent = data[i].countryCode;
@@ -57,19 +60,15 @@ function getApi() {
             createTableRow.appendChild(tableData);
             tableBody.appendChild(createTableRow);
             table.appendChild(tableBody);
-            tableCard.append(table);
+            carouselItem.appendChild(table);
+            tableCard.append(carouselItem);
             
             if (i >= 4) return
+            if (i === 0){
+
+            }
          }
       })
 }
 getApi();
 const slide = $(".carouselCard");
-nextButton.on("click", () => {
-   const slideWidth = slide.clientWidth;
-   tableCard.scrollLeft += slideWidth;
- });
- prevButton.on("click", () => {
-   const slideWidth = slide.clientWidth;
-   tableCard.scrollLeft -= slideWidth;
- });
