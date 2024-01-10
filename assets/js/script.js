@@ -15,7 +15,7 @@ const learnMore = $('#learn-more');
 var tableCard = $('#holidayCard')
 
 
-currentDateDisp.now.format('MMMM D, YYYY');
+currentDateDisp.text(now.format('MMMM D, YYYY'));
 
 newProject.on('click', function(){
     location.assign('./project.html')
