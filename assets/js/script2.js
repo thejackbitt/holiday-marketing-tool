@@ -6,9 +6,9 @@
 //button listener
 //
 
-const btn1 = $('#btn1');
-const input1 = $('input1');
-git config pull.rebase true
+// const btn1 = $('#btn1');
+// const input1 = $('input1');
+// git config pull.rebase true
 
 // btn1.on('click' function() {
 
@@ -35,8 +35,8 @@ git config pull.rebase true
 //   console.log("ok")
 // }
 
-searchFormEl.addEventListener('submit', handleSearchFormSubmit);
-;
+// searchFormEl.addEventListener('submit', handleSearchFormSubmit);
+// ;
 
 
 
@@ -533,3 +533,16 @@ function getApi() {
 //   console.log(countryNames)
 // }
 // getCountryNames();
+
+//Date selector
+var startDate2 = document.querySelector("#start");
+var endDate2 = document.querySelector("#end");
+var myBtn = document.querySelector("#myBtn")
+
+myBtn.addEventListener('click', function(){
+var Difference_In_Time = new Date(endDate2.value).getTime() - new Date(startDate2.value).getTime();
+var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+console.log(Difference_In_Days)
+console.log(startDate2.value)
+console.log(endDate2.value)
+})
