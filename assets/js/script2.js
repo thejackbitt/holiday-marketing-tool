@@ -504,6 +504,11 @@ function getApi() {
            var holidayHeader = document.createElement('h2');
            var holidayOrigin = document.createElement('h3');
 
+  // Store the search input value in local storage
+  $.localStorage.setItem('searchInput', searchInputVal);
+
+  // Build the url for sending the user to the second web page
+  var queryString = './search-results.html?q=' + searchInputVal + '&format=' + formatInputVal;
            holidayHeader.textContent = data[i].name;
            holidayOrigin.textContent = data[i].countryCode;
 
@@ -516,8 +521,21 @@ function getApi() {
      })
 };
 
+  console.log("ok")
+
+}
+
+// function to retrieve saved data
+
+function retrieveSavedData() {
+    var retrieveSearchInput = $.localStorage.getItem('searchInput');
+    if (retrieveSearchInput) {
+        console.log('retrieved search input'), retrieveSearchInput
+    }
+}
 
 
+=======
 //only used to extract country names from array
 // function getCountryNames() {
 //   let countryNames = []
