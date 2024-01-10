@@ -17,7 +17,7 @@ var tableCard = $('#holidayCard')
 // retrieving the data from local storage
 const savedProjectData = JSON.parse(localStorage.getItem('projectData')) || {};
 
-currentDateDisp.now.format('MMMM D, YYYY');
+currentDateDisp.text(now.format('MMMM D, YYYY'));
 
 newProject.on('click', function(){
     // saving new project data to the local storage

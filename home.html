@@ -20,19 +20,22 @@
         <div class="row">
             <div class="col-12">
                 <h1 class="text-center text-lg-start">Welcome to holiDATE</h1>
-                <p class="text-center text-lg-start">MMMM D, YYYY</p>
+                <p class="text-center text-lg-start" id="current-date">MMMM D, YYYY</p>
             </div>
         </div>
     </div>
-    <div class="container-fluid d-flex flex-column flex-lg-row">
-    <div class="d-flex align-items-center flex-column">
-        <button class="btn btn-primary">+New Project</button>
-    <table>
-       <tbody id="holidayCard">
-       </tbody>
-    </table>
-    </div>
-    <ul id="filesList" class="list-group scrollable-list d-flex flex-column flex-grow-1">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="p-2 d-flex align-items-center flex-column">
+                    <button class="mb-2 btn btn-primary" id="new-project">+New Project</button>
+                    <table>
+                        <tbody id="holidayCard">
+                        </tbody>
+                     </table>
+            </div>
+        <div class="col-lg-9">
+    <ul id="filesList" class="p-2 list-group scrollable-list d-flex flex-column">
         <li class="list-group-item">
             <h3>Placeholder Name</h3>
             <p><i>Last Updated: mm/dd/yy</i></p>
@@ -50,7 +53,10 @@
             <p><i>Last Updated: mm/dd/yy</i></p>
         </li>
     </ul>
+</div>
     </div>
+    </div>
+</div>
     <footer class="container-fluid">
 
     </footer>
