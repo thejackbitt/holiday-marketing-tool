@@ -484,13 +484,16 @@ const countryArrObj = [
 const dropMenu = $('#drop-menu');
 const startDate = $('#start-date');
 const endDate = $('#end-date');
+const generateBtn = $('#generate-btn');
+const targetMarket = $('#target-market');
+const timeline = $('#timeline');
+const changingContainer =$('#change-container');
 
 function getApi() {
-  var year;
   var dropDownVal = dropMenu.val();
   var indexOfCountry = findIndexByProperty(countryArrObj, 'name', dropDownVal);
   var countryCode = countryArrObj[indexOfCountry].countryCode;
-  var requestUrl = 'https://date.nager.at/api/v3/publicholidays/2024/' + countryCode
+  var requestUrl = 'https://date.nager.at/api/v3/publicholidays/2024/' + countryCode 
   
   fetch(requestUrl)
      .then(function (response) {
@@ -498,23 +501,21 @@ function getApi() {
      })
      .then(function (data) {
         console.log(data)
-        for (var i = 0; i < data.length; i++) {
-           var createTableRow = document.createElement('tr');
-           var tableData = document.createElement('td');
-           var holidayHeader = document.createElement('h2');
-           var holidayOrigin = document.createElement('h3');
-
-           holidayHeader.textContent = data[i].name;
-           holidayOrigin.textContent = data[i].countryCode;
-
-           tableData.appendChild(holidayHeader);
-           tableData.appendChild(holidayOrigin);
-           createTableRow.appendChild(tableData);
-           tableCard.append(createTableRow);
-           if (i >= 4) return
-        }
+        
+      showResults(data)
+        
      })
 };
+
+generateBtn.on('click', function() {
+  getApi();
+});
+
+function showResults(data) {
+  targetMarket.hide();
+  timeline.hide();
+  changingContainer.append(`Here are the results ${data}`);
+}
 
 
 
