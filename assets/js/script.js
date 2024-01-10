@@ -53,6 +53,7 @@ function getApi() {
                list: "search",
                srsearch: data[i].name,
                format: "json",
+               origin: location.origin,
             })
 
             fetch(`${url}?${params}`)
