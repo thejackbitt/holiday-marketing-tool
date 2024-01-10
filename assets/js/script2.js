@@ -36,8 +36,6 @@
 // ;
 
 
-
- 
 const countryArrObj = [
   {
     "countryCode": "AD",
@@ -500,10 +498,8 @@ function getApi() {
         return response.json();
      })
      .then(function (data) {
-        console.log(data)
-        
+      console.log(data)
       showResults(data)
-        
      })
 };
 
@@ -518,6 +514,14 @@ function showResults(data) {
 }
 
 
+// function to retrieve saved data
+
+function retrieveSavedData() {
+    var retrieveSearchInput = $.localStorage.getItem('searchInput');
+    if (retrieveSearchInput) {
+        console.log('retrieved search input'), retrieveSearchInput
+    }
+}
 
 
 //only used to extract country names from array
