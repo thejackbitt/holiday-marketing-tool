@@ -13,6 +13,8 @@ function getApi() {
        })
        .then(function (data){
         console.log(data)
+        const nextHoliday = data[0]
+        console.log(nextHoliday)
        })
  }
  getApi()
