@@ -36,24 +36,8 @@
 // ;
 
 
-var countryString ='Andorra AD Albania AL Argentina AR Austria AT Australia AU ÅlandIslands AX BosniaandHerzegovin BA Barbados BB Belgium BE Bulgaria BG Benin BJ Bolivia BO Brazil BR Bahamas BS Botswana BW Belarus BY Belize BZ Canada CA Switzerland CH Chile CL China CN Colombia CO CostaRica CR Cuba CU Cyprus CY Czechia CZ Germany D EDenmark DK DominicanRepublic DO Ecuador EC Estonia EE Egypt EG Spain ES Finland FI FaroeIslands FO France FR Gabon GA UnitedKingdom GB Grenada GD Guernse GG Gibraltar GI Greenland GL Gambia GM Greece GR Guatemala GT Guyana GY Honduras HN Croatia HR Haiti HT Hungary HU Indonesia ID Ireland IE IsleofMan IM Iceland IS Italy IT Jersey JE Jamaica JM Japan JP SouthKorea KR Liechtenstein LI Lesotho LS Lithuania LT Luxembourg LU Latvia LV Morocco M Monaco MC Moldova MD Montenegro ME Madagascar MG NorthMacedonia MK Mongolia MN Montserrat MS Malta MT Mexico MX Mozambique MZ Namibia NA Niger NE Nigeria NG Nicaragua NI Netherlands NL Norway NO NewZealand NZ Panama PA Peru PE PapuaNewGuinea PG Poland PL PuertoRico PR Portugal PT Paragua PY Romania RO Serbia RS Russia RU Sweden SE Singapore SG Slovenia SI SvalbardandJanMayen SJ Slovakia SK SanMarino SM Suriname SR ElSalvador SV Tunisia TN Turkey TR Ukraine UA UnitedStates US Uruguay UY VaticanCity VA Venezuela VE Vietnam VN SouthAfrica ZA Zimbabwe ZW'
-var countryArr = countryString.split(' ');
-console.log(countryArr);
-$('body p').text(`${countryArr}`)
 
-var countryArrFull = [Andorra,AD,Albania,AL,Argentina,AR,Austria,AT,Australia,AU,ÅlandIslands,AX,BosniaandHerzegovin,BA,Barbados,BB,Belgium,BE,Bulgaria,BG,Benin,BJ,Bolivia,BO,Brazil,BR,Bahamas,BS,Botswana,BW,Belarus,BY,Belize,BZ,Canada,CA,Switzerland,CH,Chile,CL,China,CN,Colombia,CO,CostaRica,CR,Cuba,CU,Cyprus,CY,Czechia,CZ,Germany,D,EDenmark,DK,DominicanRepublic,DO,Ecuador,EC,Estonia,EE,Egypt,EG,Spain,ES,Finland,FI,FaroeIslands,FO,France,FR,Gabon,GA,UnitedKingdom,GB,Grenada,GD,Guernse,GG,Gibraltar,GI,Greenland,GL,Gambia,GM,Greece,GR,Guatemala,GT,Guyana,GY,Honduras,HN,Croatia,HR,Haiti,HT,Hungary,HU,Indonesia,ID,Ireland,IE,IsleofMan,IM,Iceland,IS,Italy,IT,Jersey,JE,Jamaica,JM,Japan,JP,SouthKorea,KR,Liechtenstein,LI,Lesotho,LS,Lithuania,LT,Luxembourg,LU,Latvia,LV,Morocco,M,Monaco,MC,Moldova,MD,Montenegro,ME,Madagascar,MG,NorthMacedonia,MK,Mongolia,MN,Montserrat,MS,Malta,MT,Mexico,MX,Mozambique,MZ,Namibia,NA,Niger,NE,Nigeria,NG,Nicaragua,NI,Netherlands,NL,Norway,NO,NewZealand,NZ,Panama,PA,Peru,PE,PapuaNewGuinea,PG,Poland,PL,PuertoRico,PR,Portugal,PT,Paragua,PY,Romania,RO,Serbia,RS,Russia,RU,Sweden,SE,Singapore,SG,Slovenia,SI,SvalbardandJanMayen,SJ,Slovakia,SK,SanMarino,SM,Suriname,SR,ElSalvador,SV,Tunisia,TN,Turkey,TR,Ukraine,UA,UnitedStates,US,Uruguay,UY,VaticanCity,VA,Venezuela,VE,Vietnam,VN,SouthAfrica,ZA,Zimbabwe,ZW]
-
-
-function getCountryNames() {
-  const evenNumbers = []
-  for (var i = 0; i > countryArrFull.length; i++) {
-    if (countryArrFull[i] % 2 === 0) {
-      evenNumbers.push(countryArrFull[i])
-    }
-  }
-  $('body p').text(evenNumbers)
-}
-
+ 
 const countryArrObj = [
   {
     "countryCode": "AD",
@@ -495,4 +479,53 @@ const countryArrObj = [
     "countryCode": "ZW",
     "name": "Zimbabwe"
   }
-]
+];
+
+const dropMenu = $('#drop-menu');
+const startDate = $('#start-date');
+const endDate = $('#end-date');
+
+function getApi() {
+  var year;
+  var dropDownVal = dropMenu.val();
+  var indexOfCountry = findIndexByProperty(countryArrObj, 'name', dropDownVal);
+  var countryCode = countryArrObj[indexOfCountry].countryCode;
+  var requestUrl = 'https://date.nager.at/api/v3/publicholidays/2024/' + countryCode
+  
+  fetch(requestUrl)
+     .then(function (response) {
+        return response.json();
+     })
+     .then(function (data) {
+        console.log(data)
+        for (var i = 0; i < data.length; i++) {
+           var createTableRow = document.createElement('tr');
+           var tableData = document.createElement('td');
+           var holidayHeader = document.createElement('h2');
+           var holidayOrigin = document.createElement('h3');
+
+           holidayHeader.textContent = data[i].name;
+           holidayOrigin.textContent = data[i].countryCode;
+
+           tableData.appendChild(holidayHeader);
+           tableData.appendChild(holidayOrigin);
+           createTableRow.appendChild(tableData);
+           tableCard.append(createTableRow);
+           if (i >= 4) return
+        }
+     })
+};
+
+
+
+//only used to extract country names from array
+// function getCountryNames() {
+//   let countryNames = []
+//   for (var i = 0; i < countryArrObj.length; i++) {
+    
+//       countryNames.push(countryArrObj[i].name)   
+//   }
+//   $('body p').text(countryNames)
+//   console.log(countryNames)
+// }
+// getCountryNames();
