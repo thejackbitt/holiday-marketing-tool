@@ -38,17 +38,18 @@
 // searchFormEl.addEventListener('submit', handleSearchFormSubmit);
 // ;
 var startDate = document.querySelector("#start");
-var endDate = document.getElementById("#end");
+var endDate = document.querySelector("#end");
+var myBtn = document.querySelector("button")
+let date1 = new Date(startDate)
+let date2 = new Date(endDate)
 
 
-let field = document.querySelector('#date');
 
-// Handle date changes
-date.addEventListener('input', function () {
 
-  // Get the date
-  let date = new Date(field.value);
-  console.log(date);
-  
+myBtn.addEventListener('click', function () {
+  console.log(startDate.value)
+  console.log(endDate.value)
+  var Difference_In_Time = new Date(endDate.value).getTime() - new Date(startDate.value).getTime();
+  var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+  console.log(Difference_In_Days)
 });
-
