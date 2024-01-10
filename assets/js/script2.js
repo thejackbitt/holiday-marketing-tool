@@ -484,6 +484,14 @@ const countryArrObj = [
 const dropMenu = $('#drop-menu');
 const startDate = $('#start-date');
 const endDate = $('#end-date');
+const countryDropdown = $('#country-names');
+
+for(let i=0; i < countryArrObj.length; i++) {
+  countryDropdown.append(`<option value="` + countryArrObj[i].countryCode + `">` + countryArrObj[i].name + `</option>)`);
+  console.log("Added " + countryArrObj[i].name);
+}
+
+
 
 function getApi() {
   var year;
