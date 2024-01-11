@@ -36,8 +36,6 @@
 // ;
 
 
-
- 
 const countryArrObj = [
   {
     "countryCode": "AD",
@@ -486,50 +484,50 @@ const startDate = $('#start-date');
 const endDate = $('#end-date');
 const countryDropdown = $('#country-names');
 
+countryArrObj.unshift(countryArrObj.splice(103,1)[0])
 for(let i=0; i < countryArrObj.length; i++) {
   countryDropdown.append(`<option value="` + countryArrObj[i].countryCode + `">` + countryArrObj[i].name + `</option>)`);
   console.log("Added " + countryArrObj[i].name);
 }
 
+const generateBtn = $('#generate-btn');
+const targetMarket = $('#target-market');
+const timeline = $('#timeline');
+const changingContainer =$('#change-container');
+
+function createDropDown() {
+for(let i=0; i < countryArrObj.length; i++) {
+  countryDropdown.append(`<option value="` + countryArrObj[i].countryCode + `">` + countryArrObj[i].name + `</option>)`);
+  console.log("Added " + countryArrObj[i].name);
+}
+};
+
+
 function getApi() {
-  var year;
-  var dropDownVal = dropMenu.val();
-  var indexOfCountry = findIndexByProperty(countryArrObj, 'name', dropDownVal);
-  var countryCode = countryArrObj[indexOfCountry].countryCode;
-  var requestUrl = 'https://date.nager.at/api/v3/publicholidays/2024/' + countryCode
+  var dropDownVal = countryDropdown.val();
+   
+  var requestUrl = 'https://date.nager.at/api/v3/publicholidays/2024/' + dropDownVal
   
   fetch(requestUrl)
      .then(function (response) {
         return response.json();
      })
      .then(function (data) {
-        console.log(data)
-        for (var i = 0; i < data.length; i++) {
-           var createTableRow = document.createElement('tr');
-           var tableData = document.createElement('td');
-           var holidayHeader = document.createElement('h2');
-           var holidayOrigin = document.createElement('h3');
-
-  // Store the search input value in local storage
-  $.localStorage.setItem('searchInput', searchInputVal);
-
-  // Build the url for sending the user to the second web page
-  var queryString = './search-results.html?q=' + searchInputVal + '&format=' + formatInputVal;
-           holidayHeader.textContent = data[i].name;
-           holidayOrigin.textContent = data[i].countryCode;
-
-           tableData.appendChild(holidayHeader);
-           tableData.appendChild(holidayOrigin);
-           createTableRow.appendChild(tableData);
-           tableCard.append(createTableRow);
-           if (i >= 4) return
-        }
+      console.log(data)
+      showResults(data)
      })
 };
 
-  console.log("ok")
+generateBtn.on('click', function() {
+  getApi();
+});
 
+function showResults(data) {
+  targetMarket.hide();
+  timeline.hide();
+  changingContainer.append(`Here are the results ${data}`);
 }
+
 
 // function to retrieve saved data
 
@@ -541,7 +539,6 @@ function retrieveSavedData() {
 }
 
 
-=======
 //only used to extract country names from array
 // function getCountryNames() {
 //   let countryNames = []
