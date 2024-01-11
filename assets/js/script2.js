@@ -535,8 +535,8 @@ function getApi() {
         createTableRow.appendChild(tableData);
         changingContainer.append(createTableRow);
      }
-     })
-};
+     }
+
 
 generateBtn.on('click', function () {
   getApi();
@@ -691,3 +691,4 @@ myBtn.addEventListener('click', function () {
     return 32 - new Date(iYear, iMonth, 32).getDate();
   }
 })
+
