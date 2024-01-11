@@ -525,67 +525,13 @@ function getApi() {
       $('.dropdown').hide();
       generateBtn.hide();
       $('#showCalendar').show();
+   
+      dateSelector.show();
       
      })
      };
     
-
-
-generateBtn.on('click', function () {
-  getApi();
-});
-
-// function showResults(data) {
-//   inputGrp.hide();
-//   timeline.hide();
-
-// }
-
-
-// function to retrieve saved data
-
-function retrieveSavedData() {
-  var retrieveSearchInput = $.localStorage.getItem('searchInput');
-  if (retrieveSearchInput) {
-    console.log('retrieved search input'), retrieveSearchInput
-  }
-}
-
-//only used to extract country names from array
-// function getCountryNames() {
-//   let countryNames = []
-//   for (var i = 0; i < countryArrObj.length; i++) {
-
-//       countryNames.push(countryArrObj[i].name)   
-//   }
-//   $('body p').text(countryNames)
-//   console.log(countryNames)
-// }
-// getCountryNames();
-
-//Date selector
-var startDate2 = document.querySelector("#start");
-var endDate2 = document.querySelector("#end");
-var myBtn = document.querySelector("#generate-btn");
-var pageCalendar = document.querySelector('#showCalendar');
-pageCalendar.style.display = 'none';
-
-
-myBtn.addEventListener('click', function () {
-  var Difference_In_Time = new Date(endDate2.value).getTime() - new Date(startDate2.value).getTime();
-  var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-  console.log(Difference_In_Days)
-  console.log(startDate2.value)
-  console.log(endDate2.value)
-  var f = new Date(`${startDate2.value} 00:00`)
-  console.log(f)
-  console.log(f.getDate())
-  console.log(f.getMonth())
-  console.log(f.getYear())
-  pageCalendar.style.display = 'block';
-
-
-  //Calendar
+     //Calendar
   today = new Date();
   currentMonth = today.getMonth();
   currentYear = today.getFullYear();
@@ -598,11 +544,11 @@ myBtn.addEventListener('click', function () {
   showCalendar(currentMonth, currentYear);
 
 
-  next.addEventListener('click',function next() {
+  function next() {
     currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
     currentMonth = (currentMonth + 1) % 12;
     showCalendar(currentMonth, currentYear);
-  })
+  }
 
   function previous() {
     currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
@@ -662,9 +608,9 @@ myBtn.addEventListener('click', function () {
           if (date === f.getDate() && year === f.getFullYear() && month === f.getMonth()|| date === s.getDate() && year === s.getFullYear() && month === s.getMonth()) {
             cell.classList.add("bg-info");
           }
-          // if (s.getDate() < date < f.getDate() && s.getFullYear() < year < f.getFullYear() && s.getMonth() < month < f.getMonth()) {
-          //   cell.classList.add("bg-info");
-          // }
+          if (s.getDate() <= date <= f.getDate() && s.getFullYear() <= year <= f.getFullYear() && s.getMonth() <= month <= f.getMonth()) {
+            cell.classList.add("bg-info");
+          }
           cell.appendChild(cellText);
           row.appendChild(cell);
           date++;
@@ -678,10 +624,281 @@ myBtn.addEventListener('click', function () {
 
   }
 
+     function next() {
+      currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
+      currentMonth = (currentMonth + 1) % 12;
+      showCalendar(currentMonth, currentYear);
+    }
+  
+    function previous() {
+      currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
+      currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+      showCalendar(currentMonth, currentYear);
+    }
+  
+    function jump() {
+      currentYear = parseInt(selectYear.value);
+      currentMonth = parseInt(selectMonth.value);
+      showCalendar(currentMonth, currentYear);
+    }
+
+    function daysInMonth(iMonth, iYear) {
+      return 32 - new Date(iYear, iMonth, 32).getDate();
+    }
+
+generateBtn.on('click', function () {
+  var Difference_In_Time = new Date(endDate2.value).getTime() - new Date(startDate2.value).getTime();
+  var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+  console.log(Difference_In_Days)
+  console.log(startDate2.value)
+  console.log(endDate2.value)
+  var f = new Date(`${startDate2.value} 00:00`)
+  console.log(f)
+  console.log(f.getDate() + 1)
+  console.log(f.getMonth())
+  console.log(f.getYear())
+  pageCalendar.style.display = 'block';
+
+  
+  showCalendar(currentMonth, currentYear);
+
+
+  // function next() {
+  //   currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
+  //   currentMonth = (currentMonth + 1) % 12;
+  //   showCalendar(currentMonth, currentYear);
+  // }
+
+  // function previous() {
+  //   currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
+  //   currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+  //   showCalendar(currentMonth, currentYear);
+  // }
+
+  // function jump() {
+  //   currentYear = parseInt(selectYear.value);
+  //   currentMonth = parseInt(selectMonth.value);
+  //   showCalendar(currentMonth, currentYear);
+  // }
+
+  // function showCalendar(month, year) {
+
+  //   let firstDay = (new Date(year, month)).getDay();
+
+  //   tbl = document.getElementById("calendar-body"); // body of the calendar
+
+  //   // clearing all previous cells
+  //   tbl.innerHTML = "";
+
+  //   // filing data about month and in the page via DOM.
+  //   monthAndYear.innerHTML = months[month] + " " + year;
+  //   selectYear.value = year;
+  //   selectMonth.value = month;
+
+  //   // creating all cells
+  //   let date = 1;
+  //   for (let i = 0; i < 6; i++) {
+  //     // creates a table row
+  //     let row = document.createElement("tr");
+
+  //     //creating individual cells, filing them up with data.
+  //     for (let j = 0; j < 7; j++) {
+  //       if (i === 0 && j < firstDay) {
+  //         cell = document.createElement("td");
+  //         cellText = document.createTextNode("");
+  //         cell.appendChild(cellText);
+  //         row.appendChild(cell);
+  //       }
+  //       else if (date > daysInMonth(month, year)) {
+  //         break;
+  //       }
+
+  //       else {
+  //         cell = document.createElement("td");
+  //         cellText = document.createTextNode(date);
+  //         // color today's date
+  //         if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+  //           cell.classList.add("bg-info");
+  //         } 
+
+  //         //colors start date
+  //         var s = new Date(`${startDate2.value} 00:00`)
+  //         var f = new Date(`${endDate2.value} 00:00`)
+  //         if (date === f.getDate() && year === f.getFullYear() && month === f.getMonth()|| date === s.getDate() && year === s.getFullYear() && month === s.getMonth()) {
+  //           cell.classList.add("bg-info");
+  //         }
+  //         if (s.getDate() <= date <= f.getDate() && s.getFullYear() <= year <= f.getFullYear() && s.getMonth() <= month <= f.getMonth()) {
+  //           cell.classList.add("bg-info");
+  //         }
+  //         cell.appendChild(cellText);
+  //         row.appendChild(cell);
+  //         date++;
+  //       }
+
+
+  //     }
+
+  //     tbl.appendChild(row); // appending each row into calendar body.
+  //   }
+
+  // }
+
 
   // check how many days in a month code from https://dzone.com/articles/determining-number-days-month
-  function daysInMonth(iMonth, iYear) {
-    return 32 - new Date(iYear, iMonth, 32).getDate();
+  // function daysInMonth(iMonth, iYear) {
+  //   return 32 - new Date(iYear, iMonth, 32).getDate();
+  // }
+  getApi();
+
+});
+
+// function showResults(data) {
+//   inputGrp.hide();
+//   timeline.hide();
+
+// }
+
+
+// function to retrieve saved data
+
+function retrieveSavedData() {
+  var retrieveSearchInput = $.localStorage.getItem('searchInput');
+  if (retrieveSearchInput) {
+    console.log('retrieved search input'), retrieveSearchInput
   }
-})
+}
+
+//only used to extract country names from array
+// function getCountryNames() {
+//   let countryNames = []
+//   for (var i = 0; i < countryArrObj.length; i++) {
+
+//       countryNames.push(countryArrObj[i].name)   
+//   }
+//   $('body p').text(countryNames)
+//   console.log(countryNames)
+// }
+// getCountryNames();
+
+//Date selector
+var startDate2 = document.querySelector("#start");
+var endDate2 = document.querySelector("#end");
+
+var pageCalendar = document.querySelector('#showCalendar');
+pageCalendar.style.display = 'none';
+
+
+// myBtn.addEventListener('click', function () {
+//   var Difference_In_Time = new Date(endDate2.value).getTime() - new Date(startDate2.value).getTime();
+//   var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+//   console.log(Difference_In_Days)
+//   console.log(startDate2.value)
+//   console.log(endDate2.value)
+//   var f = new Date(`${startDate2.value} 00:00`)
+//   console.log(f)
+//   console.log(f.getDate() + 1)
+//   console.log(f.getMonth())
+//   console.log(f.getYear())
+//   pageCalendar.style.display = 'block';
+
+
+//   //Calendar
+//   today = new Date();
+//   currentMonth = today.getMonth();
+//   currentYear = today.getFullYear();
+//   selectYear = document.getElementById("year");
+//   selectMonth = document.getElementById("month");
+
+//   months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+//   monthAndYear = document.getElementById("monthAndYear");
+//   showCalendar(currentMonth, currentYear);
+
+
+//   function next() {
+//     currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
+//     currentMonth = (currentMonth + 1) % 12;
+//     showCalendar(currentMonth, currentYear);
+//   }
+
+//   function previous() {
+//     currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
+//     currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+//     showCalendar(currentMonth, currentYear);
+//   }
+
+//   function jump() {
+//     currentYear = parseInt(selectYear.value);
+//     currentMonth = parseInt(selectMonth.value);
+//     showCalendar(currentMonth, currentYear);
+//   }
+
+//   function showCalendar(month, year) {
+
+//     let firstDay = (new Date(year, month)).getDay();
+
+//     tbl = document.getElementById("calendar-body"); // body of the calendar
+
+//     // clearing all previous cells
+//     tbl.innerHTML = "";
+
+//     // filing data about month and in the page via DOM.
+//     monthAndYear.innerHTML = months[month] + " " + year;
+//     selectYear.value = year;
+//     selectMonth.value = month;
+
+//     // creating all cells
+//     let date = 1;
+//     for (let i = 0; i < 6; i++) {
+//       // creates a table row
+//       let row = document.createElement("tr");
+
+//       //creating individual cells, filing them up with data.
+//       for (let j = 0; j < 7; j++) {
+//         if (i === 0 && j < firstDay) {
+//           cell = document.createElement("td");
+//           cellText = document.createTextNode("");
+//           cell.appendChild(cellText);
+//           row.appendChild(cell);
+//         }
+//         else if (date > daysInMonth(month, year)) {
+//           break;
+//         }
+
+//         else {
+//           cell = document.createElement("td");
+//           cellText = document.createTextNode(date);
+//           // color today's date
+//           if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+//             cell.classList.add("bg-info");
+//           } 
+
+//           //colors start date
+//           var s = new Date(`${startDate2.value} 00:00`)
+//           var f = new Date(`${endDate2.value} 00:00`)
+//           if (date === f.getDate() && year === f.getFullYear() && month === f.getMonth()|| date === s.getDate() && year === s.getFullYear() && month === s.getMonth()) {
+//             cell.classList.add("bg-info");
+//           }
+//           if (s.getDate() <= date <= f.getDate() && s.getFullYear() <= year <= f.getFullYear() && s.getMonth() <= month <= f.getMonth()) {
+//             cell.classList.add("bg-info");
+//           }
+//           cell.appendChild(cellText);
+//           row.appendChild(cell);
+//           date++;
+//         }
+
+
+//       }
+
+//       tbl.appendChild(row); // appending each row into calendar body.
+//     }
+
+//   }
+
+
+//   // check how many days in a month code from https://dzone.com/articles/determining-number-days-month
+//   function daysInMonth(iMonth, iYear) {
+//     return 32 - new Date(iYear, iMonth, 32).getDate();
+//   // }
+// // })
 
