@@ -11,6 +11,7 @@
 .bordered-col {
     border-radius: 0px;
     border: 1px solid white;
+    transition: all 1s ease;
 }
 
 h1,
