@@ -513,7 +513,8 @@ function getApi() {
      })
      .then(function (data) {
       console.log(data)
-      inputGrp.hide();
+      $('.dropdown').hide();
+      generateBtn.hide();
       for (var i = 0; i < data.length; i++) {
         var createTableRow = document.createElement('tr');
         var tableData = document.createElement('td');
