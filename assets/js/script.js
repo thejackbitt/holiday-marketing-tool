@@ -53,7 +53,7 @@ function getApi() {
             var tableData = document.createElement('td');
             var holidayHeader = document.createElement('h2');
             var holidayOrigin = document.createElement('h3');
-            var learnMore = document.createElement('p');
+            var learnMore = document.createElement('div');
             var country = countryArrObj.find(({ countryCode }) => countryCode === data[i].countryCode);
             // var holidayName = data[i].name.replaceAll(' ', '_');
 
@@ -83,16 +83,6 @@ function getApi() {
                })
                .catch(function (error) { console.log(error); });
 
-            function resultsOnPage(myArray) {
-               myArray.forEach(function (item) {
-                  let itemTitle = item.title;
-                  let itemSnippet = item.snippet;
-                  let itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item.title}`);
-                  console.log(itemTitle);
-                  console.log(itemSnippet);
-                  console.log(itemUrl);
-                  learnMore.textContent = itemSnippet;
-               })};
 
          table.setAttribute('class', 'd-block w-100');
          if (i === 0) {
@@ -123,6 +113,22 @@ function getApi() {
       }
       })
 }
+function resultsOnPage(myArray) {
+   myArray.forEach(function (item) {
+      let itemTitle = item.title;
+      let itemSnippet = item.snippet;
+      let itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item.title}`);
+      console.log(itemTitle);
+      console.log(itemSnippet);
+      console.log(itemUrl);
+      learnMore.innerHTML=`<div class="resultItem">
+      <h3 class="resultTitle">
+      <a href="${itemUrl}" target="_blank" rel="noopener">${itemTitle}</a>
+      </h3>
+      <p class="resultSnippet"><a href="${itemUrl}"  target="_blank" rel="noopener">
+      ${itemSnippet}</a></p>
+      </div>`
+   })};
 getApi();
 const slide = $(".carouselCard");
 
