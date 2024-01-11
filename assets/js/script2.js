@@ -494,8 +494,6 @@ for(let i=0; i < countryArrObj.length; i++) {
   console.log("Added " + countryArrObj[i].name);
 }
 
-
-
 function getApi() {
   var year;
   var dropDownVal = dropMenu.val();
