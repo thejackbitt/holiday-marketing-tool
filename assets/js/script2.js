@@ -563,7 +563,7 @@ function retrieveSavedData() {
 //Date selector
 var startDate2 = document.querySelector("#start");
 var endDate2 = document.querySelector("#end");
-var myBtn = document.querySelector("#myBtn");
+var myBtn = document.querySelector("#generate-btn");
 var pageCalendar = document.querySelector('#showCalendar');
 pageCalendar.style.display = 'none';
 
