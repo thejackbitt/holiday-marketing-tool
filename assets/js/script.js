@@ -19,20 +19,20 @@ const savedProjectData = JSON.parse(localStorage.getItem('projectData')) || {};
 
 currentDateDisp.text(now.format('MMMM D, YYYY'));
 
-newProject.on('click', function(){
-    // saving new project data to the local storage
-    savedProjectData.lastVisited = dayjs().format('MMMM D, YYYY');
-    localStorage.setItem('projectData', JSON.stringify(savedProjectData));
+newProject.on('click', function () {
+   // saving new project data to the local storage
+   savedProjectData.lastVisited = dayjs().format('MMMM D, YYYY');
+   localStorage.setItem('projectData', JSON.stringify(savedProjectData));
 
-    location.assign('./project.html')
-    
+   location.assign('./project.html')
+
 });
 
-learnMore.on('click', function() {
-    var holidayName = $('#holiday-OTD');
-    var urlBuild = 'en.wikipedia.org/wiki/' + holidayName;
-    window.open(urlBuild, '_blank');
-    
+learnMore.on('click', function () {
+   var holidayName = $('#holiday-OTD');
+   var urlBuild = 'en.wikipedia.org/wiki/' + holidayName;
+   window.open(urlBuild, '_blank');
+
 })
 
 
@@ -54,10 +54,10 @@ function getApi() {
             var holidayHeader = document.createElement('h2');
             var holidayOrigin = document.createElement('h3');
             var learnMore = document.createElement('a');
-            var country = countryArrObj.find(({ countryCode }) => countryCode === data[i].countryCode );
+            var country = countryArrObj.find(({ countryCode }) => countryCode === data[i].countryCode);
             // var holidayName = data[i].name.replaceAll(' ', '_');
-            
-            
+
+
 
             var url = "https://en.wikipedia.org/w/api.php";
             // var wikiUrl = 'https://en.wikipedia.org/wiki/';
@@ -67,43 +67,56 @@ function getApi() {
             var params = new URLSearchParams({
                action: "query",
                list: "search",
-               srsearch: data[i].name + ' ' + country.name,
+               srsearch: data[i].name //+ ' ' + country.name,
+               ,
                srlimit: 1,
                format: "json",
                origin: '*',
             })
 
+            console.log(`${url}?${params}`)
+
             fetch(`${url}?${params}`)
                .then(function (response) { return response.json(); })
                .then(function (data) {
-                  let resultsArray = data
-                  console.log(resultsArray)
+                  let resultsArray = data.query.search;
+                  resultsOnPage(resultsArray);
                })
                .catch(function (error) { console.log(error); });
 
-            table.setAttribute('class', 'd-block w-100');
-            if (i === 0) {
-               carouselItem.setAttribute('class', 'carousel-item active');
-            } else {
-               carouselItem.setAttribute('class', 'carousel-item');
-            };
+            function resultsOnPage(myArray) {
+               myArray.forEach(function (item) {
+                  let itemTitle = item.title;
+                  let itemSnippet = item.snippet;
+                  let itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item.title}`);
+                  console.log(itemTitle);
+                  console.log(itemSnippet);
+                  console.log(itemUrl);
+               })}
 
-            holidayHeader.textContent = data[i].name;
-            holidayOrigin.textContent = country.name;
+         table.setAttribute('class', 'd-block w-100');
+         if (i === 0) {
+            carouselItem.setAttribute('class', 'carousel-item active');
+         } else {
+            carouselItem.setAttribute('class', 'carousel-item');
+         };
 
-            tableData.appendChild(holidayHeader);
-            tableData.appendChild(holidayOrigin);
-            createTableRow.appendChild(tableData);
-            tableBody.appendChild(createTableRow);
-            table.appendChild(tableBody);
-            carouselItem.appendChild(table);
-            tableCard.append(carouselItem);
+         holidayHeader.textContent = data[i].name;
+         holidayOrigin.textContent = country.name;
 
-            if (i >= 4) return
-            if (i === 0) {
+         tableData.appendChild(holidayHeader);
+         tableData.appendChild(holidayOrigin);
+         createTableRow.appendChild(tableData);
+         tableBody.appendChild(createTableRow);
+         table.appendChild(tableBody);
+         carouselItem.appendChild(table);
+         tableCard.append(carouselItem);
 
-            }
+         if (i >= 4) return
+         if (i === 0) {
+
          }
+      }
       })
 }
 getApi();

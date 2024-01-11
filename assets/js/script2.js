@@ -522,15 +522,11 @@ generateBtn.on('click', function() {
   getApi();
 });
 
-<<<<<<< HEAD
-
-=======
 function showResults(data) {
   targetMarket.hide();
   timeline.hide();
   changingContainer.append(`Here are the results ${data}`);
 }
->>>>>>> 18cee0d5d14d8ef1156ef2d8a8e88e88cf859f9d
 
 
 // function to retrieve saved data
@@ -543,10 +539,6 @@ function retrieveSavedData() {
 }
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 18cee0d5d14d8ef1156ef2d8a8e88e88cf859f9d
 //only used to extract country names from array
 // function getCountryNames() {
 //   let countryNames = []
