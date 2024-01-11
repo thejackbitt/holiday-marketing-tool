@@ -529,7 +529,7 @@ function getApi() {
 
   console.log("ok")
 
-}
+
 
 // function to retrieve saved data
 
@@ -541,7 +541,7 @@ function retrieveSavedData() {
 }
 
 
-=======
+
 //only used to extract country names from array
 // function getCountryNames() {
 //   let countryNames = []

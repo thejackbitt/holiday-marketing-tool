@@ -54,8 +54,10 @@ function getApi() {
             var holidayHeader = document.createElement('h2');
             var holidayOrigin = document.createElement('h3');
             var learnMore = document.createElement('a');
+            var country = countryArrObj.find(({ countryCode }) => countryCode === data[i].countryCode )
 
             var url = "https://en.wikipedia.org/w/api.php";
+            var wikiUrl = 'https://en.wikipedia.org/wiki/';
 
             var params = new URLSearchParams({
                action: "query",
@@ -68,9 +70,7 @@ function getApi() {
             fetch(`${url}?${params}`)
                .then(function (response) { return response.json(); })
                .then(function (response) {
-                  if (response.query.search[0].title === "Nelson Mandela") {
-                     console.log("Your search page 'Nelson Mandela' exists on English Wikipedia");
-                  }
+                  console.log('it works!')
                })
                .catch(function (error) { console.log(error); });
 
@@ -82,7 +82,7 @@ function getApi() {
             };
 
             holidayHeader.textContent = data[i].name;
-            holidayOrigin.textContent = data[i].countryCode;
+            holidayOrigin.textContent = country.name;
 
             tableData.appendChild(holidayHeader);
             tableData.appendChild(holidayOrigin);
@@ -101,3 +101,4 @@ function getApi() {
 }
 getApi();
 const slide = $(".carouselCard");
+
