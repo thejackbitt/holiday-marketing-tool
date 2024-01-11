@@ -35,10 +35,10 @@ learnMore.on('click', function () {
 
 })
 
-
+//this function is to create and populate the holiday of the day carousel on the home page
 function getApi() {
+   //nager api call
    var requestUrl = 'https://date.nager.at/api/v3/NextPublicHolidaysWorldwide';
-   // requestUrl = requestUrl + now.format('YYYY') + '/US';
    fetch(requestUrl)
       .then(function (response) {
          return response.json();
@@ -46,6 +46,7 @@ function getApi() {
       .then(function (data) {
          console.log(data)
          for (var i = 0; i < data.length; i++) {
+            // creating elements to display the information
             var carouselItem = document.createElement('div');
             var table = document.createElement('table');
             var tableBody = document.createElement('tbody');
@@ -54,20 +55,18 @@ function getApi() {
             var holidayHeader = document.createElement('h2');
             var holidayOrigin = document.createElement('h3');
             var learnMore = document.createElement('div');
+
+            // locate the country name by country code in the country array
             var country = countryArrObj.find(({ countryCode }) => countryCode === data[i].countryCode);
-            // var holidayName = data[i].name.replaceAll(' ', '_');
 
-
-
+            // defining items for the wikipedia api call
             var url = "https://en.wikipedia.org/w/api.php";
-            // var wikiUrl = 'https://en.wikipedia.org/wiki/';
-            // wikiUrl = wikiUrl + holidayName
-            // console.log(wikiUrl)
+
             console.log(data[i]);
             var params = new URLSearchParams({
                action: "query",
                list: "search",
-               srsearch: data[i].localName,
+               srsearch: data[i].name + country.name,
                srlimit: 1,
                format: "json",
                origin: '*',
@@ -75,6 +74,7 @@ function getApi() {
 
             console.log(`${url}?${params}`);
 
+            // wikipedia api call
             fetch(`${url}?${params}`)
                .then(function (response) { return response.json(); })
                .then(function (data) {
@@ -83,52 +83,56 @@ function getApi() {
                })
                .catch(function (error) { console.log(error); });
 
+            // this function is supposed to take the info from the wiki api call and fill the information into a display element
+            function resultsOnPage(myArray) {
+               myArray.forEach(function (item) {
+                  let itemTitle = item.title;
+                  let itemSnippet = item.snippet;
+                  let itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item.title}`);
+                  console.log(itemTitle);
+                  console.log(itemSnippet);
+                  console.log(itemUrl);
+                  learnMore.innerHTML = `<div class="resultItem">
+                  <h3 class="resultTitle">
+                  <a href="${itemUrl}" target="_blank" rel="noopener">${itemTitle}</a>
+                  </h3>
+                  <p class="resultSnippet"><a href="${itemUrl}"  target="_blank" rel="noopener">
+                  ${itemSnippet}</a></p>
+                  </div>`
+               })
+            };
 
-         table.setAttribute('class', 'd-block w-100');
-         if (i === 0) {
-            carouselItem.setAttribute('class', 'carousel-item active');
-         } else {
-            carouselItem.setAttribute('class', 'carousel-item');
-         };
+            // creating the carousel cards
+            table.setAttribute('class', 'd-block w-100');
+            if (i === 0) {
+               carouselItem.setAttribute('class', 'carousel-item active');
+            } else {
+               carouselItem.setAttribute('class', 'carousel-item');
+            };
 
-         holidayHeader.textContent = data[i].name;
-         holidayOrigin.textContent = country.name;
-         
+            // putting the display items into the html
+            holidayHeader.textContent = data[i].name;
+            holidayOrigin.textContent = country.name;
 
+            tableData.appendChild(holidayHeader);
+            tableData.appendChild(holidayOrigin);
+            tableData.appendChild(learnMore);
 
-         tableData.appendChild(holidayHeader);
-         tableData.appendChild(holidayOrigin);
-         tableData.appendChild(learnMore);
+            createTableRow.appendChild(tableData);
+            tableBody.appendChild(createTableRow);
+            table.appendChild(tableBody);
+            carouselItem.appendChild(table);
+            tableCard.append(carouselItem);
 
-         createTableRow.appendChild(tableData);
-         tableBody.appendChild(createTableRow);
-         table.appendChild(tableBody);
-         carouselItem.appendChild(table);
-         tableCard.append(carouselItem);
+            if (i >= 4) return
+            if (i === 0) {
 
-         if (i >= 4) return
-         if (i === 0) {
-
+            }
          }
-      }
       })
 }
-function resultsOnPage(myArray) {
-   myArray.forEach(function (item) {
-      let itemTitle = item.title;
-      let itemSnippet = item.snippet;
-      let itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item.title}`);
-      console.log(itemTitle);
-      console.log(itemSnippet);
-      console.log(itemUrl);
-      learnMore.innerHTML=`<div class="resultItem">
-      <h3 class="resultTitle">
-      <a href="${itemUrl}" target="_blank" rel="noopener">${itemTitle}</a>
-      </h3>
-      <p class="resultSnippet"><a href="${itemUrl}"  target="_blank" rel="noopener">
-      ${itemSnippet}</a></p>
-      </div>`
-   })};
+
 getApi();
+
 const slide = $(".carouselCard");
 
