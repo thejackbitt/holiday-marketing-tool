@@ -486,6 +486,8 @@ const dropMenu = $('#drop-menu');
 const startDate = $('#start-date');
 const endDate = $('#end-date');
 const countryDropdown = $('#country-names');
+const dateSelector = $('#date-selector')
+dateSelector.hide();
 
 countryArrObj.unshift(countryArrObj.splice(103, 1)[0])
 for (let i = 0; i < countryArrObj.length; i++) {
@@ -519,22 +521,11 @@ function getApi() {
       console.log(data)
       $('.dropdown').hide();
       generateBtn.hide();
-      for (var i = 0; i < data.length; i++) {
-        var createTableRow = document.createElement('tr');
-        var tableData = document.createElement('td');
-        var holidayHeader = document.createElement('p');
-        var holidayDate = document.createElement('p');
-
-        holidayHeader.textContent = data[i].name;
-        holidayDate.textContent = data[i].date;
-
-        tableData.appendChild(holidayHeader);
-        tableData.appendChild(holidayDate);
-        createTableRow.appendChild(tableData);
-        changingContainer.append(createTableRow);
-     }
+      $('#showCalendar').show();
+      
      })
-    }
+     };
+    
 
 
 generateBtn.on('click', function () {
