@@ -53,7 +53,7 @@ function getApi() {
             var tableData = document.createElement('td');
             var holidayHeader = document.createElement('h2');
             var holidayOrigin = document.createElement('h3');
-            var learnMore = document.createElement('a');
+            var learnMore = document.createElement('p');
             var country = countryArrObj.find(({ countryCode }) => countryCode === data[i].countryCode);
             // var holidayName = data[i].name.replaceAll(' ', '_');
 
@@ -63,7 +63,7 @@ function getApi() {
             // var wikiUrl = 'https://en.wikipedia.org/wiki/';
             // wikiUrl = wikiUrl + holidayName
             // console.log(wikiUrl)
-            console.log(data[i])
+            console.log(data[i]);
             var params = new URLSearchParams({
                action: "query",
                list: "search",
@@ -71,9 +71,9 @@ function getApi() {
                srlimit: 1,
                format: "json",
                origin: '*',
-            })
+            });
 
-            console.log(`${url}?${params}`)
+            console.log(`${url}?${params}`);
 
             fetch(`${url}?${params}`)
                .then(function (response) { return response.json(); })
@@ -91,7 +91,8 @@ function getApi() {
                   console.log(itemTitle);
                   console.log(itemSnippet);
                   console.log(itemUrl);
-               })}
+                  learnMore.textContent = itemSnippet;
+               })};
 
          table.setAttribute('class', 'd-block w-100');
          if (i === 0) {
@@ -102,9 +103,13 @@ function getApi() {
 
          holidayHeader.textContent = data[i].name;
          holidayOrigin.textContent = country.name;
+         
+
 
          tableData.appendChild(holidayHeader);
          tableData.appendChild(holidayOrigin);
+         tableData.appendChild(learnMore);
+
          createTableRow.appendChild(tableData);
          tableBody.appendChild(createTableRow);
          table.appendChild(tableBody);
