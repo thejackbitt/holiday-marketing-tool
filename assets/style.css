@@ -74,3 +74,13 @@ footer {
 [data-bs-theme=dark] .carousel .carousel-control-next-icon, [data-bs-theme=dark] .carousel .carousel-control-prev-icon, [data-bs-theme=dark].carousel .carousel-control-next-icon, [data-bs-theme=dark].carousel .carousel-control-prev-icon {
     filter: invert(0) grayscale(100);
 }
+
+.carousel-item.active {
+    opacity: 100%;
+    transition: all 0.5s ease;
+}
+
+.carousel-item{
+    opacity: 10%;
+    transition: all 0.5s ease;
+}
