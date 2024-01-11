@@ -30,38 +30,47 @@
             <div class="col-lg-3 bordered-col">
                 <div class="p-2 d-flex align-items-center flex-column">
                     <button class="mb-2 btn btn-primary w-100 rounded-3" id="new-project">+New Project</button>
-                    <table>
-                        <tbody id="holidayCard">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-                <div class="col-lg-9 bordered-col">
-                    <ul id="filesList" class="p-2 list-group scrollable-list d-flex flex-column">
-                        <li class="list-group-item">
-                            <h3>Placeholder Name</h3>
-                            <p><i>Last Updated: mm/dd/yy</i></p>
-                        </li>
-                        <li class="list-group-item">
-                            <h3>Placeholder Name</h3>
-                            <p><i>Last Updated: mm/dd/yy</i></p>
-                        </li>
-                        <li class="list-group-item">
-                            <h3>Placeholder Name</h3>
-                            <p><i>Last Updated: mm/dd/yy</i></p>
-                        </li>
-                        <li class="list-group-item">
-                            <h3>Placeholder Name</h3>
-                            <p><i>Last Updated: mm/dd/yy</i></p>
-                        </li>
-                        <li class="list-group-item">
-                            <h3>Placeholder Name</h3>
-                            <p><i>Last Updated: mm/dd/yy</i></p>
-                        </li>
-                    </ul>
+                    <div class="carouselWrapper">
+                        <div id="holidayCard" class="carousel slide">
+                            <div class="carousel-inner">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#holidayCard"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#holidayCard"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="col-lg-9">
+            <ul id="filesList" class="p-2 list-group scrollable-list d-flex flex-column">
+                <li class="list-group-item">
+                    <h3>Placeholder Name</h3>
+                    <p><i>Last Updated: mm/dd/yy</i></p>
+                </li>
+                <li class="list-group-item">
+                    <h3>Placeholder Name</h3>
+                    <p><i>Last Updated: mm/dd/yy</i></p>
+                </li>
+                <li class="list-group-item">
+                    <h3>Placeholder Name</h3>
+                    <p><i>Last Updated: mm/dd/yy</i></p>
+                </li>
+                <li class="list-group-item">
+                    <h3>Placeholder Name</h3>
+                    <p><i>Last Updated: mm/dd/yy</i></p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    </div>
     </div>
     <footer class="container-fluid">
 
@@ -78,6 +87,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <!-- Custom Script -->
+    <script src="./assets/js/countryArray.js"></script>
     <script src="./assets/js/script.js"></script>
 </body>
 
