@@ -14,13 +14,22 @@
     transition: all 1s ease;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: "franklin-gothic-urw", sans-serif;
     font-weight: 500;
     font-style: normal;
 }
 
-p, span, button, div, .btn {
+p,
+span,
+button,
+div,
+.btn {
     font-family: "franklin-gothic-urw", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -34,7 +43,7 @@ p, span, button, div, .btn {
     --bs-btn-hover-color: #fff;
     --bs-btn-hover-bg: var(--new-bs-primary-text-emphasis);
     --bs-btn-hover-border-color: var(--new-bs-primary-text-emphasis);
-    --bs-btn-focus-shadow-rgb: 49,132,253;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
     --bs-btn-active-color: #fff;
     --bs-btn-active-bg: var(--new-bs-primary-text-emphasis);
     --bs-btn-active-border-color: var(--new-bs-primary-text-emphasis);
