@@ -538,7 +538,6 @@ function retrieveSavedData() {
     }
 }
 
-
 //only used to extract country names from array
 // function getCountryNames() {
 //   let countryNames = []
