@@ -491,14 +491,13 @@ for(let i=0; i < countryArrObj.length; i++) {
 }
 
 const generateBtn = $('#generate-btn');
-const targetMarket = $('#target-market');
+const inputGrp = $('input-group')
 const timeline = $('#timeline');
 const changingContainer =$('#change-container');
 
 function createDropDown() {
 for(let i=0; i < countryArrObj.length; i++) {
   countryDropdown.append(`<option value="` + countryArrObj[i].countryCode + `">` + countryArrObj[i].name + `</option>)`);
-  console.log("Added " + countryArrObj[i].name);
 }
 };
 
@@ -514,7 +513,22 @@ function getApi() {
      })
      .then(function (data) {
       console.log(data)
-      showResults(data)
+      $('.dropdown').hide();
+      generateBtn.hide();
+      for (var i = 0; i < data.length; i++) {
+        var createTableRow = document.createElement('tr');
+        var tableData = document.createElement('td');
+        var holidayHeader = document.createElement('p');
+        var holidayDate = document.createElement('p');
+
+        holidayHeader.textContent = data[i].name;
+        holidayDate.textContent = data[i].date;
+
+        tableData.appendChild(holidayHeader);
+        tableData.appendChild(holidayDate);
+        createTableRow.appendChild(tableData);
+        changingContainer.append(createTableRow);
+     }
      })
 };
 
@@ -522,11 +536,11 @@ generateBtn.on('click', function() {
   getApi();
 });
 
-function showResults(data) {
-  targetMarket.hide();
-  timeline.hide();
-  changingContainer.append(`Here are the results ${data}`);
-}
+// function showResults(data) {
+//   inputGrp.hide();
+//   timeline.hide();
+
+// }
 
 
 // function to retrieve saved data
