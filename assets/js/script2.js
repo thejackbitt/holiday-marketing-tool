@@ -535,8 +535,8 @@ function getApi() {
         createTableRow.appendChild(tableData);
         changingContainer.append(createTableRow);
      }
-     })
-};
+     }
+;
 
 generateBtn.on('click', function () {
   getApi();
@@ -586,7 +586,7 @@ myBtn.addEventListener('click', function () {
   console.log(endDate2.value)
   var f = new Date(`${startDate2.value} 00:00`)
   console.log(f)
-  console.log(f.getDate() + 1)
+  console.log(f.getDate())
   console.log(f.getMonth())
   console.log(f.getYear())
   pageCalendar.style.display = 'block';
@@ -669,9 +669,9 @@ myBtn.addEventListener('click', function () {
           if (date === f.getDate() && year === f.getFullYear() && month === f.getMonth()|| date === s.getDate() && year === s.getFullYear() && month === s.getMonth()) {
             cell.classList.add("bg-info");
           }
-          if (s.getDate() <= date <= f.getDate() && s.getFullYear() <= year <= f.getFullYear() && s.getMonth() <= month <= f.getMonth()) {
-            cell.classList.add("bg-info");
-          }
+          // if (s.getDate() < date < f.getDate() && s.getFullYear() < year < f.getFullYear() && s.getMonth() < month < f.getMonth()) {
+          //   cell.classList.add("bg-info");
+          // }
           cell.appendChild(cellText);
           row.appendChild(cell);
           date++;
