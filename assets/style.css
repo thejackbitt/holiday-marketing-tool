@@ -65,3 +65,21 @@ footer {
     margin: -1px;
     background-color: #3a4147;
 }
+
+.carouselWrapper {
+    width: 80%;
+}
+
+.carousel-control-next {
+    right: -50px;
+    top: 41px;
+}
+
+.carousel-control-prev {
+    left: -50px;
+    top: 41px;
+}
+
+[data-bs-theme=dark] .carousel .carousel-control-next-icon, [data-bs-theme=dark] .carousel .carousel-control-prev-icon, [data-bs-theme=dark].carousel .carousel-control-next-icon, [data-bs-theme=dark].carousel .carousel-control-prev-icon {
+    filter: invert(0) grayscale(100);
+}
