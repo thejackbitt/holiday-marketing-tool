@@ -559,7 +559,10 @@ function retrieveSavedData() {
 //Date selector
 var startDate2 = document.querySelector("#start");
 var endDate2 = document.querySelector("#end");
-var myBtn = document.querySelector("#myBtn")
+var myBtn = document.querySelector("#myBtn");
+var pageCalendar = document.querySelector('#showCalendar');
+pageCalendar.style.display = 'none';
+
 
 myBtn.addEventListener('click', function(){
 var Difference_In_Time = new Date(endDate2.value).getTime() - new Date(startDate2.value).getTime();
@@ -567,6 +570,12 @@ var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 console.log(Difference_In_Days)
 console.log(startDate2.value)
 console.log(endDate2.value)
+var f = new Date(startDate2.value)
+console.log(f)
+console.log(f.getDate())
+console.log(f.getMonth())
+console.log(f.getYear())
+pageCalendar.style.display = 'block';
 })
 today = new Date();
 currentMonth = today.getMonth();
@@ -636,6 +645,9 @@ function showCalendar(month, year) {
                 if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
                     cell.classList.add("bg-info");
                 } // color today's date
+                if (date === startDate2.value) {
+                  cell.classList.add("bg-info");
+                }
                 cell.appendChild(cellText);
                 row.appendChild(cell);
                 date++;
