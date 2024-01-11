@@ -482,25 +482,31 @@ const countryArrObj = [
 const dropMenu = $('#drop-menu');
 const startDate = $('#start-date');
 const endDate = $('#end-date');
+const countryDropdown = $('#country-names');
+
+countryArrObj.unshift(countryArrObj.splice(103,1)[0])
+for(let i=0; i < countryArrObj.length; i++) {
+  countryDropdown.append(`<option value="` + countryArrObj[i].countryCode + `">` + countryArrObj[i].name + `</option>)`);
+  console.log("Added " + countryArrObj[i].name);
+}
 
 const generateBtn = $('#generate-btn');
 const targetMarket = $('#target-market');
 const timeline = $('#timeline');
 const changingContainer =$('#change-container');
 
-const countryDropdown = $('#country-names');
-
+function createDropDown() {
 for(let i=0; i < countryArrObj.length; i++) {
   countryDropdown.append(`<option value="` + countryArrObj[i].countryCode + `">` + countryArrObj[i].name + `</option>)`);
   console.log("Added " + countryArrObj[i].name);
 }
+};
 
 
 function getApi() {
-  var dropDownVal = dropMenu.val();
-  var indexOfCountry = findIndexByProperty(countryArrObj, 'name', dropDownVal);
-  var countryCode = countryArrObj[indexOfCountry].countryCode;
-  var requestUrl = 'https://date.nager.at/api/v3/publicholidays/2024/' + countryCode 
+  var dropDownVal = countryDropdown.val();
+   
+  var requestUrl = 'https://date.nager.at/api/v3/publicholidays/2024/' + dropDownVal
   
   fetch(requestUrl)
      .then(function (response) {
