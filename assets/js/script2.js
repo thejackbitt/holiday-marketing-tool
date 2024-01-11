@@ -496,6 +496,9 @@ for (let i = 0; i < countryArrObj.length; i++) {
 }
 
 const generateBtn = $('#generate-btn');
+const next = $('#next');
+const previous = $('#previous');
+const jump = $('#jump');
 const inputGrp = $('input-group')
 const timeline = $('#timeline');
 const changingContainer = $('#change-container');
@@ -595,11 +598,11 @@ myBtn.addEventListener('click', function () {
   showCalendar(currentMonth, currentYear);
 
 
-  function next() {
+  next.addEventListener('click',function next() {
     currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
     currentMonth = (currentMonth + 1) % 12;
     showCalendar(currentMonth, currentYear);
-  }
+  })
 
   function previous() {
     currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
