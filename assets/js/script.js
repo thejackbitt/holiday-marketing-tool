@@ -63,12 +63,11 @@ function getApi() {
             // var wikiUrl = 'https://en.wikipedia.org/wiki/';
             // wikiUrl = wikiUrl + holidayName
             // console.log(wikiUrl)
-
+            console.log(data[i])
             var params = new URLSearchParams({
                action: "query",
                list: "search",
-               srsearch: data[i].name //+ ' ' + country.name,
-               ,
+               srsearch: data[i].localName,
                srlimit: 1,
                format: "json",
                origin: '*',
