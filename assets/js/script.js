@@ -54,23 +54,30 @@ function getApi() {
             var holidayHeader = document.createElement('h2');
             var holidayOrigin = document.createElement('h3');
             var learnMore = document.createElement('a');
-            var country = countryArrObj.find(({ countryCode }) => countryCode === data[i].countryCode )
+            var country = countryArrObj.find(({ countryCode }) => countryCode === data[i].countryCode );
+            // var holidayName = data[i].name.replaceAll(' ', '_');
+            
+            
 
             var url = "https://en.wikipedia.org/w/api.php";
-            var wikiUrl = 'https://en.wikipedia.org/wiki/';
+            // var wikiUrl = 'https://en.wikipedia.org/wiki/';
+            // wikiUrl = wikiUrl + holidayName
+            // console.log(wikiUrl)
 
             var params = new URLSearchParams({
                action: "query",
                list: "search",
-               srsearch: data[i].name,
+               srsearch: data[i].name + ' ' + country.name,
+               srlimit: 1,
                format: "json",
-               origin: location.origin,
+               origin: '*',
             })
 
             fetch(`${url}?${params}`)
                .then(function (response) { return response.json(); })
-               .then(function (response) {
-                  console.log('it works!')
+               .then(function (data) {
+                  let resultsArray = data
+                  console.log(resultsArray)
                })
                .catch(function (error) { console.log(error); });
 
