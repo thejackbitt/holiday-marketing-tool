@@ -466,10 +466,12 @@ pageCalendar.style.display = 'none';
 countryArrObj.unshift(countryArrObj.splice(103, 1)[0])
 for (let i = 0; i < countryArrObj.length; i++) {
   countryDropdown.append(`<option value="` + countryArrObj[i].countryCode + `">` + countryArrObj[i].name + `</option>)`);
-  console.log("Added " + countryArrObj[i].name);
+  // console.log("Added " + countryArrObj[i].name);
 }
 
 const generateBtn = $('#generate-btn');
+// const previous = $('#previous');
+// const next = $('#next');
 const inputGrp = $('input-group')
 const timeline = $('#timeline');
 const changingContainer = $('#change-container');
@@ -477,7 +479,7 @@ const changingContainer = $('#change-container');
 function createDropDown() {
   for (let i = 0; i < countryArrObj.length; i++) {
     countryDropdown.append(`<option value="` + countryArrObj[i].countryCode + `">` + countryArrObj[i].name + `</option>)`);
-    console.log("Added " + countryArrObj[i].name);
+    // console.log("Added " + countryArrObj[i].name);
   }
 };
 
@@ -493,113 +495,58 @@ function getApi() {
     })
     .then(function (data) {
       console.log(data)
-      showResults(data)
-    })
       $('.dropdown').hide();
       generateBtn.hide();
-      for (var i = 0; i < data.length; i++) {
-        var createTableRow = document.createElement('tr');
-        var tableData = document.createElement('td');
-        var holidayHeader = document.createElement('p');
-        var holidayDate = document.createElement('p');
+      $('#showCalendar').show();
 
-        holidayHeader.textContent = data[i].name;
-        holidayDate.textContent = data[i].date;
+      dateSelector.show();
 
-        tableData.appendChild(holidayHeader);
-        tableData.appendChild(holidayDate);
-        createTableRow.appendChild(tableData);
-        changingContainer.append(createTableRow);
-     }
-     }
-;
-
-generateBtn.on('click', function () {
-  getApi();
-});
-
-// function showResults(data) {
-//   inputGrp.hide();
-//   timeline.hide();
-
-// }
-
-
-// function to retrieve saved data
-
-function retrieveSavedData() {
-  var retrieveSearchInput = $.localStorage.getItem('searchInput');
-  if (retrieveSearchInput) {
-    console.log('retrieved search input'), retrieveSearchInput
-  }
-}
-
-//only used to extract country names from array
-// function getCountryNames() {
-//   let countryNames = []
-//   for (var i = 0; i < countryArrObj.length; i++) {
-
-//       countryNames.push(countryArrObj[i].name)   
-//   }
-//   $('body p').text(countryNames)
-//   console.log(countryNames)
-// }
-// getCountryNames();
-
-//Date selector
-var startDate2 = document.querySelector("#start");
-var endDate2 = document.querySelector("#end");
-var myBtn = document.querySelector("#generate-btn");
-var previous = document.querySelector("#previous");
-var next = document.querySelector("#next");
-var pageCalendar = document.querySelector('#showCalendar');
-pageCalendar.style.display = 'none';
-
-
-myBtn.addEventListener('click', function () {
-  var Difference_In_Time = new Date(endDate2.value).getTime() - new Date(startDate2.value).getTime();
-  var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-  console.log(Difference_In_Days)
-  console.log(startDate2.value)
-  console.log(endDate2.value)
-  var f = new Date(`${startDate2.value} 00:00`)
-  console.log(f)
-  console.log(f.getDate() + 1)
-  console.log(f.getMonth())
-  console.log(f.getYear())
-  pageCalendar.style.display = 'block';
-  
-
+    })
+};
 
 //Calendar
-today = new Date();
-currentMonth = today.getMonth();
-currentYear = today.getFullYear();
-selectYear = document.getElementById("year");
-selectMonth = document.getElementById("month");
+let today = new Date();
+const selectYear = document.getElementById("year");
+const selectMonth = document.getElementById("month");
+const monthAndYear = document.getElementById("monthAndYear");
+var startVal = start.value;
+var startDate = new Date(`${startVal} 00:00`);
+var startMonth = startDate.getMonth();
+var startYear = startDate.getFullYear();
+var endVal = end.value;
+var endDate = new Date(`${endVal} 00:00`);
+var endMonth = endDate.getMonth();
+var endYear = endDate.getFullYear();
+var currentMonth = startDate.getMonth();
+var currentYear = startDate.getFullYear();
 
-months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-monthAndYear = document.getElementById("monthAndYear");
-function showCalendar(startDate, endDate) {
 
-  let firstDay = (new Date(year, month));
 
-  tbl = document.getElementById("calendar-body"); // body of the calendar
+let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-    // clearing all previous cells
-    tbl.innerHTML = "";
+//= new Date(`${start} 00:00`)
+function showCalendar(startMonth, startYear, endMonth, endYear) {
+//month, year were the parameters
+
+  let firstDay = (new Date(startYear, startMonth));
+  
+
+ let tbl = document.getElementById("calendar-body"); // body of the calendar
+
+  // clearing all previous cells
+  tbl.innerHTML = "";
 
   // filing data about month and in the page via DOM.
-  monthAndYear.innerHTML = months[month] + " " + year;
-  selectYear.value = year;
-  selectMonth.value = month;
+  monthAndYear.innerHTML = months[startMonth] + " " + startYear;
+  selectYear.value = startYear;
+  selectMonth.value = startMonth;
 
-    // creating all cells
-    let date = 1;
-    for (let i = 0; i < 6; i++) {
-      // creates a table row
-      let row = document.createElement("tr");
+  // creating all cells
+  let date = 1;
+  for (let i = 0; i < 6; i++) {
+    // creates a table row
+    let row = document.createElement("tr");
 
     //creating individual cells, filing them up with data.
     for (let j = 0; j < 7; j++) {
@@ -609,21 +556,21 @@ function showCalendar(startDate, endDate) {
         cell.appendChild(cellText);
         row.appendChild(cell);
       }
-      else if (date > daysInMonth(month, year)) {
+      else if (date > daysInMonth(startMonth, startYear)) {
         break;
       }
 
-        else {
-          cell = document.createElement("td");
-          cellText = document.createTextNode(date);
-          // color today's date
-          if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
-            cell.classList.add("bg-info");
-          } 
+      else {
+        cell = document.createElement("td");
+        cellText = document.createTextNode(date);
+        // color today's date
+        if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+          cell.classList.add("bg-info");
+        }
 
         //colors start date
-        var s = new Date(`${startDate2.value} 00:00`)
-        var f = new Date(`${endDate2.value} 00:00`)
+        var s = new Date(`${startVal} 00:00`)
+        var f = new Date(`${endVal} 00:00`)
         if (date === f.getDate() && year === f.getFullYear() && month === f.getMonth() || date === s.getDate() && year === s.getFullYear() && month === s.getMonth()) {
           cell.classList.add("bg-info");
         }
@@ -634,12 +581,12 @@ function showCalendar(startDate, endDate) {
       }
 
 
-      }
-
-      tbl.appendChild(row); // appending each row into calendar body.
     }
 
+    tbl.appendChild(row); // appending each row into calendar body.
   }
+
+}
 
 function next() {
   currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
@@ -664,23 +611,37 @@ function daysInMonth(iMonth, iYear) {
 }
 
 generateBtn.on('click', function () {
-  var Difference_In_Time = new Date(endDate2.value).getTime() - new Date(startDate2.value).getTime();
+  var Difference_In_Time = new Date(end.value).getTime() - new Date(start.value).getTime();
   var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
   dateSelector.hide();
-  console.log(startDate2)
-console.log(endDate2)
+  console.log(start)
+console.log(end)
   console.log(Difference_In_Days)
-  console.log(startDate2.value)
-  console.log(endDate2.value)
-  var f = new Date(`${startDate2.value} 00:00`)
+  console.log(start.value)
+  console.log(end.value)
+  var f = new Date(`${start.value} 00:00`)
   console.log(f)
   console.log(f.getDate() + 1)
   console.log(f.getMonth())
-  console.log(f.getYear())
+  console.log(f.getFullYear())
   pageCalendar.style.display = 'block';
 
+  var getDateArray = function(start, end) {
+    var arr = new Array();
+    var dt = new Date(start);
+    while (dt <= end) {
+        arr.push(new Date(dt));
+        dt.setDate(dt.getDate() + 1);
+    }
+    return arr;
+}
 
-  showCalendar(startDate2.value, endDate2.value);
+var dateArr = getDateArray(startDate.value, endDate.value);
+console.log(dateArr)
+  
+
+
+  showCalendar(startMonth, startYear, endMonth, endYear);
 
 
 
