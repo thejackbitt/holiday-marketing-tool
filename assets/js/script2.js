@@ -6,37 +6,7 @@
 //button listener
 //
 
-// const btn1 = $('#btn1');
-// const input1 = $('input1');
-// git config pull.rebase true
 
-// btn1.on('click' function() {
-
-// });
-
-// function handleSearchFormSubmit(event) {
-//   event.preventDefault();
-
-//   var searchInputVal = document.querySelector('#search-input').value;
-//   var formatInputVal = document.querySelector('#format-input').value;
-
-//   if (!searchInputVal) {
-//     console.error('You need a search input value!');
-//     return;
-//   }
-
-//   // Build the url for sending the user to the second web page
-//   var queryString = './search-results.html?q=' + searchInputVal + '&format=' + formatInputVal;
-
-//   // send user to another page
-//   console.log(queryString)
-//   location.assign(queryString);
-
-//   console.log("ok")
-// }
-
-// searchFormEl.addEventListener('submit', handleSearchFormSubmit);
-// ;
 
 
 const countryArrObj = [
@@ -483,19 +453,24 @@ const countryArrObj = [
 ];
 
 const dropMenu = $('#drop-menu');
-const startDate = $('#start-date');
-const endDate = $('#end-date');
 const countryDropdown = $('#country-names');
 const dateSelector = $('#date-selector')
-dateSelector.hide();
+var start = document.querySelector("#start");
+var end = document.querySelector("#end");
+
+
+var pageCalendar = document.querySelector('#showCalendar');
+pageCalendar.style.display = 'none';
+
 
 countryArrObj.unshift(countryArrObj.splice(103, 1)[0])
 for (let i = 0; i < countryArrObj.length; i++) {
   countryDropdown.append(`<option value="` + countryArrObj[i].countryCode + `">` + countryArrObj[i].name + `</option>)`);
-  console.log("Added " + countryArrObj[i].name);
+  // console.log("Added " + countryArrObj[i].name);
 }
 
 const generateBtn = $('#generate-btn');
+const mainForm = $('.formComponent');
 const inputGrp = $('input-group')
 const timeline = $('#timeline');
 const changingContainer = $('#change-container');
@@ -503,7 +478,7 @@ const changingContainer = $('#change-container');
 function createDropDown() {
   for (let i = 0; i < countryArrObj.length; i++) {
     countryDropdown.append(`<option value="` + countryArrObj[i].countryCode + `">` + countryArrObj[i].name + `</option>)`);
-    console.log("Added " + countryArrObj[i].name);
+    // console.log("Added " + countryArrObj[i].name);
   }
 };
 
@@ -521,219 +496,178 @@ function getApi() {
       console.log(data)
       $('.dropdown').hide();
       generateBtn.hide();
+      mainForm.hide();
       $('#showCalendar').show();
-   
+
       dateSelector.show();
-      
-     })
-     };
-    
-     //Calendar
-  today = new Date();
-  currentMonth = today.getMonth();
-  currentYear = today.getFullYear();
-  selectYear = document.getElementById("year");
-  selectMonth = document.getElementById("month");
 
-  months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    })
+};
 
-  monthAndYear = document.getElementById("monthAndYear");
-     function showCalendar(month, year) {
+//Calendar
+let today = new Date();
+// console.log(today)
+const selectYear = document.getElementById("year");
+const selectMonth = document.getElementById("month");
+const monthAndYear = document.getElementById("monthAndYear");
+let startVal;
+let startDate;
+let startMonth;
+let startYear;
+let endVal;
+let endDate;
 
-      let firstDay = (new Date(year, month)).getDay();
-  
-      tbl = document.getElementById("calendar-body"); // body of the calendar
-  
-      // clearing all previous cells
-      tbl.innerHTML = "";
-  
-      // filing data about month and in the page via DOM.
-      monthAndYear.innerHTML = months[month] + " " + year;
-      selectYear.value = year;
-      selectMonth.value = month;
-  
-      // creating all cells
-      let date = 1;
-      for (let i = 0; i < 6; i++) {
-        // creates a table row
-        let row = document.createElement("tr");
-  
-        //creating individual cells, filing them up with data.
-        for (let j = 0; j < 7; j++) {
-          if (i === 0 && j < firstDay) {
-            cell = document.createElement("td");
-            cellText = document.createTextNode("");
-            cell.appendChild(cellText);
-            row.appendChild(cell);
-          }
-          else if (date > daysInMonth(month, year)) {
-            break;
-          }
-  
-          else {
-            cell = document.createElement("td");
-            cellText = document.createTextNode(date);
-            // color today's date
-            if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
-              cell.classList.add("bg-info");
-            } 
-  
-            //colors start date
-            var s = new Date(`${startDate2.value} 00:00`)
-            var f = new Date(`${endDate2.value} 00:00`)
-            if (date === f.getDate() && year === f.getFullYear() && month === f.getMonth()|| date === s.getDate() && year === s.getFullYear() && month === s.getMonth()) {
-              cell.classList.add("bg-info");
-            }
-            if (s.getDate() <= date <= f.getDate() && s.getFullYear() <= year <= f.getFullYear() && s.getMonth() <= month <= f.getMonth()) {
-              cell.classList.add("bg-info");
-            }
-            cell.appendChild(cellText);
-            row.appendChild(cell);
-            date++;
-          }
-  
-  
-        }
-  
-        tbl.appendChild(row); // appending each row into calendar body.
+let endMonth;
+let endYear;
+let currentMonth;
+let currentYear;
+
+var Difference_In_Days;
+
+let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+//= new Date(`${start} 00:00`)
+function showCalendar(startMonth, startYear, endMonth, endYear) {
+  //month, year were the parameters
+
+  let firstDay = (new Date(startYear, startMonth));
+
+
+  let tbl = document.getElementById("calendar-body"); // body of the calendar
+
+  // clearing all previous cells
+  tbl.innerHTML = "";
+
+  // filing data about month and in the page via DOM.
+  monthAndYear.innerHTML = months[startMonth] + " " + startYear;
+  selectYear.value = startYear;
+  selectMonth.value = startMonth;
+
+  // creating all cells
+  let date = 1;
+  let cellDateStart = startDate.getDate();
+  let cellDateEnd = endDate.getDate();
+  for (let i = 0; i < 6; i++) {
+   
+    // creates a table row
+    let row = document.createElement("tr");
+
+    //creating individual cells, filing them up with data.
+    for (let j = 0; j < 7; j++) {
+      if (i === 0 && j < firstDay) {
+       let cell = document.createElement("td");
+       let cellText = document.createTextNode("");
+        cell.appendChild(cellText);
+        row.appendChild(cell);
       }
-  
+      else if (date > daysInMonth(startMonth, startYear)) {
+        break;
+      }
+      // && currentYear === today.getFullYear() && currentMonth === today.getMonth())
+      else {
+        cell = document.createElement("td");
+        cellText = document.createTextNode(date);
+        console.log(date)
+        if (date >= cellDateStart && date <= cellDateEnd) {
+          cell.classList.add('bg-warning');
+        }
+        
+       
+
+        // Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+        // console.log(Difference_In_Days)
+        // let day = startDate
+        // for (var k = 0; k < Difference_In_Days; k++) {
+        //   cell.classList.add('bg-warning');
+        //   day = day.setDate(day.getDate() +1)
+        // }
+
+         // color today's date
+        console.log(today.getDate())
+        if (date === today.getDate()) {
+          cell.classList.add("bg-info");
+        }
+
+        //colors start date
+        var s = new Date(`${startVal} 00:00`)
+        var f = new Date(`${endVal} 00:00`)
+        if (date === f.getDate() && year === f.getFullYear() && month === f.getMonth() || date === s.getDate() && year === s.getFullYear() && month === s.getMonth()) {
+          cell.classList.add("bg-info");
+        }
+
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+        date++;
+      }
+
+
     }
 
-     function next() {
-      currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
-      currentMonth = (currentMonth + 1) % 12;
-      showCalendar(currentMonth, currentYear);
-    }
-  
-    function previous() {
-      currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
-      currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
-      showCalendar(currentMonth, currentYear);
-    }
-  
-    function jump() {
-      currentYear = parseInt(selectYear.value);
-      currentMonth = parseInt(selectMonth.value);
-      showCalendar(currentMonth, currentYear);
-    }
+    tbl.appendChild(row); // appending each row into calendar body.
+  }
 
-    function daysInMonth(iMonth, iYear) {
-      return 32 - new Date(iYear, iMonth, 32).getDate();
-    }
+}
+
+function next() {
+  currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
+  currentMonth = (currentMonth + 1) % 12;
+  showCalendar(currentMonth, currentYear);
+}
+
+function previous() {
+  currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
+  currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+  showCalendar(currentMonth, currentYear);
+}
+
+function jump() {
+  currentYear = parseInt(selectYear.value);
+  currentMonth = parseInt(selectMonth.value);
+  showCalendar(currentMonth, currentYear);
+}
+
+function daysInMonth(iMonth, iYear) {
+  return 32 - new Date(iYear, iMonth, 32).getDate();
+}
 
 generateBtn.on('click', function () {
-  var Difference_In_Time = new Date(endDate2.value).getTime() - new Date(startDate2.value).getTime();
-  var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-  console.log(Difference_In_Days)
-  console.log(startDate2.value)
-  console.log(endDate2.value)
-  var f = new Date(`${startDate2.value} 00:00`)
-  console.log(f)
-  console.log(f.getDate() + 1)
-  console.log(f.getMonth())
-  console.log(f.getYear())
+  
+  startVal = start.value;
+  startDate = new Date(`${startVal} 00:00`);
+  console.log(startDate)
+  startMonth = startDate.getMonth();
+  startYear = startDate.getFullYear();
+  endVal = end.value;
+  endDate = new Date(`${endVal} 00:00`);
+  
+  endMonth = endDate.getMonth();
+  endYear = endDate.getFullYear();
+  currentMonth = startDate.getMonth();
+  currentYear = startDate.getFullYear();
+
+  var Difference_In_Time = endDate - startDate;
+  Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+  dateSelector.hide();
+  //   console.log(start)
+  // console.log(end)
+  //   console.log(Difference_In_Days)
+  //   console.log(start.value)
+  //   console.log(end.value)
+  var f = new Date(`${start.value} 00:00`)
+  // console.log(f)
+  // console.log(f.getDate() + 1)
+  // console.log(f.getMonth())
+  // console.log(f.getFullYear()())
   pageCalendar.style.display = 'block';
 
-  
-  showCalendar(currentMonth, currentYear);
+
+  showCalendar(startMonth, startYear, endMonth, endYear);
 
 
-  // function next() {
-  //   currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
-  //   currentMonth = (currentMonth + 1) % 12;
-  //   showCalendar(currentMonth, currentYear);
-  // }
 
-  // function previous() {
-  //   currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
-  //   currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
-  //   showCalendar(currentMonth, currentYear);
-  // }
-
-  // function jump() {
-  //   currentYear = parseInt(selectYear.value);
-  //   currentMonth = parseInt(selectMonth.value);
-  //   showCalendar(currentMonth, currentYear);
-  // }
-
-  // function showCalendar(month, year) {
-
-  //   let firstDay = (new Date(year, month)).getDay();
-
-  //   tbl = document.getElementById("calendar-body"); // body of the calendar
-
-  //   // clearing all previous cells
-  //   tbl.innerHTML = "";
-
-  //   // filing data about month and in the page via DOM.
-  //   monthAndYear.innerHTML = months[month] + " " + year;
-  //   selectYear.value = year;
-  //   selectMonth.value = month;
-
-  //   // creating all cells
-  //   let date = 1;
-  //   for (let i = 0; i < 6; i++) {
-  //     // creates a table row
-  //     let row = document.createElement("tr");
-
-  //     //creating individual cells, filing them up with data.
-  //     for (let j = 0; j < 7; j++) {
-  //       if (i === 0 && j < firstDay) {
-  //         cell = document.createElement("td");
-  //         cellText = document.createTextNode("");
-  //         cell.appendChild(cellText);
-  //         row.appendChild(cell);
-  //       }
-  //       else if (date > daysInMonth(month, year)) {
-  //         break;
-  //       }
-
-  //       else {
-  //         cell = document.createElement("td");
-  //         cellText = document.createTextNode(date);
-  //         // color today's date
-  //         if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
-  //           cell.classList.add("bg-info");
-  //         } 
-
-  //         //colors start date
-  //         var s = new Date(`${startDate2.value} 00:00`)
-  //         var f = new Date(`${endDate2.value} 00:00`)
-  //         if (date === f.getDate() && year === f.getFullYear() && month === f.getMonth()|| date === s.getDate() && year === s.getFullYear() && month === s.getMonth()) {
-  //           cell.classList.add("bg-info");
-  //         }
-  //         if (s.getDate() <= date <= f.getDate() && s.getFullYear() <= year <= f.getFullYear() && s.getMonth() <= month <= f.getMonth()) {
-  //           cell.classList.add("bg-info");
-  //         }
-  //         cell.appendChild(cellText);
-  //         row.appendChild(cell);
-  //         date++;
-  //       }
-
-
-  //     }
-
-  //     tbl.appendChild(row); // appending each row into calendar body.
-  //   }
-
-  // }
-
-
-  // check how many days in a month code from https://dzone.com/articles/determining-number-days-month
-  // function daysInMonth(iMonth, iYear) {
-  //   return 32 - new Date(iYear, iMonth, 32).getDate();
-  // }
   getApi();
 
 });
-
-// function showResults(data) {
-//   inputGrp.hide();
-//   timeline.hide();
-
-// }
-
 
 // function to retrieve saved data
 
@@ -757,124 +691,8 @@ function retrieveSavedData() {
 // getCountryNames();
 
 //Date selector
-var startDate2 = document.querySelector("#start");
-var endDate2 = document.querySelector("#end");
-
-var pageCalendar = document.querySelector('#showCalendar');
-pageCalendar.style.display = 'none';
 
 
-// myBtn.addEventListener('click', function () {
-//   var Difference_In_Time = new Date(endDate2.value).getTime() - new Date(startDate2.value).getTime();
-//   var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-//   console.log(Difference_In_Days)
-//   console.log(startDate2.value)
-//   console.log(endDate2.value)
-//   var f = new Date(`${startDate2.value} 00:00`)
-//   console.log(f)
-//   console.log(f.getDate() + 1)
-//   console.log(f.getMonth())
-//   console.log(f.getYear())
-//   pageCalendar.style.display = 'block';
 
 
-//   //Calendar
-//   today = new Date();
-//   currentMonth = today.getMonth();
-//   currentYear = today.getFullYear();
-//   selectYear = document.getElementById("year");
-//   selectMonth = document.getElementById("month");
-
-//   months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-//   monthAndYear = document.getElementById("monthAndYear");
-//   showCalendar(currentMonth, currentYear);
-
-
-//   function next() {
-//     currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
-//     currentMonth = (currentMonth + 1) % 12;
-//     showCalendar(currentMonth, currentYear);
-//   }
-
-//   function previous() {
-//     currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
-//     currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
-//     showCalendar(currentMonth, currentYear);
-//   }
-
-//   function jump() {
-//     currentYear = parseInt(selectYear.value);
-//     currentMonth = parseInt(selectMonth.value);
-//     showCalendar(currentMonth, currentYear);
-//   }
-
-//   function showCalendar(month, year) {
-
-//     let firstDay = (new Date(year, month)).getDay();
-
-//     tbl = document.getElementById("calendar-body"); // body of the calendar
-
-//     // clearing all previous cells
-//     tbl.innerHTML = "";
-
-//     // filing data about month and in the page via DOM.
-//     monthAndYear.innerHTML = months[month] + " " + year;
-//     selectYear.value = year;
-//     selectMonth.value = month;
-
-//     // creating all cells
-//     let date = 1;
-//     for (let i = 0; i < 6; i++) {
-//       // creates a table row
-//       let row = document.createElement("tr");
-
-//       //creating individual cells, filing them up with data.
-//       for (let j = 0; j < 7; j++) {
-//         if (i === 0 && j < firstDay) {
-//           cell = document.createElement("td");
-//           cellText = document.createTextNode("");
-//           cell.appendChild(cellText);
-//           row.appendChild(cell);
-//         }
-//         else if (date > daysInMonth(month, year)) {
-//           break;
-//         }
-
-//         else {
-//           cell = document.createElement("td");
-//           cellText = document.createTextNode(date);
-//           // color today's date
-//           if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
-//             cell.classList.add("bg-info");
-//           } 
-
-//           //colors start date
-//           var s = new Date(`${startDate2.value} 00:00`)
-//           var f = new Date(`${endDate2.value} 00:00`)
-//           if (date === f.getDate() && year === f.getFullYear() && month === f.getMonth()|| date === s.getDate() && year === s.getFullYear() && month === s.getMonth()) {
-//             cell.classList.add("bg-info");
-//           }
-//           if (s.getDate() <= date <= f.getDate() && s.getFullYear() <= year <= f.getFullYear() && s.getMonth() <= month <= f.getMonth()) {
-//             cell.classList.add("bg-info");
-//           }
-//           cell.appendChild(cellText);
-//           row.appendChild(cell);
-//           date++;
-//         }
-
-
-//       }
-
-//       tbl.appendChild(row); // appending each row into calendar body.
-//     }
-
-//   }
-
-
-//   // check how many days in a month code from https://dzone.com/articles/determining-number-days-month
-//   function daysInMonth(iMonth, iYear) {
-//     return 32 - new Date(iYear, iMonth, 32).getDate();
-//   // }
-// // })
 
