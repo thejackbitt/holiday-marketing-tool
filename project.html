@@ -38,6 +38,15 @@
                         <select name="country-names" id="country-names">
                         </select>
                     </div>
+                     <!-- Date Selector -->
+                <div class="align-items-center" id="date-selector">
+                    <label for="start">Start date:</label>
+                    <input type="date" id="start" class="date" value="2024-01-01" min="2024-01-01" max="2030-12-31"
+                        required>
+                    <label for="end">End date:</label>
+                    <input type="date" id="end" class="date" value="2024-01-01" min="2024-01-01" max="2030-12-31"
+                        required>
+                </div>
                     <button class="m-2 btn btn-primary rounded-3" id="generate-btn">Create Report</button>
                 </div>
                 <!-- Calendar -->
@@ -101,16 +110,7 @@
                         </form>
                     </div>
                 </div>
-                <!-- Date Selector -->
-                <div class="align-items-center" id="date-selector">
-                    <label for="start">Start date:</label>
-                    <input type="date" id="start" class="date" value="2024-01-01" min="2024-01-01" max="2030-12-31"
-                        required>
-                    <label for="end">End date:</label>
-                    <input type="date" id="end" class="date" value="2024-01-01" min="2024-01-01" max="2030-12-31"
-                        required>
-                    <button id="myBtn">Submit</button>
-                </div>
+               
             </div>
         </div>
     </div>
