@@ -504,30 +504,34 @@ function getApi() {
 
 //Calendar
 let today = new Date();
+// console.log(today)
 const selectYear = document.getElementById("year");
 const selectMonth = document.getElementById("month");
 const monthAndYear = document.getElementById("monthAndYear");
-var startVal = start.value;
-var startDate = new Date(`${startVal} 00:00`);
-var startMonth = startDate.getMonth();
-var startYear = startDate.getFullYear();
-var endVal = end.value;
-var endDate = new Date(`${endVal} 00:00`);
-var endMonth = endDate.getMonth();
-var endYear = endDate.getFullYear();
-var currentMonth = startDate.getMonth();
-var currentYear = startDate.getFullYear();
+let startVal;
+let startDate;
+let startMonth;
+let startYear;
+let endVal;
+let endDate;
+
+let endMonth;
+let endYear;
+let currentMonth;
+let currentYear;
+
+var Difference_In_Days;
 
 let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 //= new Date(`${start} 00:00`)
 function showCalendar(startMonth, startYear, endMonth, endYear) {
-//month, year were the parameters
+  //month, year were the parameters
 
   let firstDay = (new Date(startYear, startMonth));
-  
 
- let tbl = document.getElementById("calendar-body"); // body of the calendar
+
+  let tbl = document.getElementById("calendar-body"); // body of the calendar
 
   // clearing all previous cells
   tbl.innerHTML = "";
@@ -539,27 +543,46 @@ function showCalendar(startMonth, startYear, endMonth, endYear) {
 
   // creating all cells
   let date = 1;
+  let cellDateStart = startDate.getDate();
+  let cellDateEnd = endDate.getDate();
   for (let i = 0; i < 6; i++) {
+   
     // creates a table row
     let row = document.createElement("tr");
 
     //creating individual cells, filing them up with data.
     for (let j = 0; j < 7; j++) {
       if (i === 0 && j < firstDay) {
-        cell = document.createElement("td");
-        cellText = document.createTextNode("");
+       let cell = document.createElement("td");
+       let cellText = document.createTextNode("");
         cell.appendChild(cellText);
         row.appendChild(cell);
       }
       else if (date > daysInMonth(startMonth, startYear)) {
         break;
       }
-
+      // && currentYear === today.getFullYear() && currentMonth === today.getMonth())
       else {
         cell = document.createElement("td");
         cellText = document.createTextNode(date);
-        // color today's date
-        if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+        console.log(date)
+        if (date >= cellDateStart && date <= cellDateEnd) {
+          cell.classList.add('bg-warning');
+        }
+        
+       
+
+        // Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+        // console.log(Difference_In_Days)
+        // let day = startDate
+        // for (var k = 0; k < Difference_In_Days; k++) {
+        //   cell.classList.add('bg-warning');
+        //   day = day.setDate(day.getDate() +1)
+        // }
+
+         // color today's date
+        console.log(today.getDate())
+        if (date === today.getDate()) {
           cell.classList.add("bg-info");
         }
 
@@ -606,14 +629,28 @@ function daysInMonth(iMonth, iYear) {
 }
 
 generateBtn.on('click', function () {
-  var Difference_In_Time = new Date(end.value).getTime() - new Date(start.value).getTime();
-  var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+  
+  startVal = start.value;
+  startDate = new Date(`${startVal} 00:00`);
+  console.log(startDate)
+  startMonth = startDate.getMonth();
+  startYear = startDate.getFullYear();
+  endVal = end.value;
+  endDate = new Date(`${endVal} 00:00`);
+  
+  endMonth = endDate.getMonth();
+  endYear = endDate.getFullYear();
+  currentMonth = startDate.getMonth();
+  currentYear = startDate.getFullYear();
+
+  var Difference_In_Time = endDate - startDate;
+  Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
   dateSelector.hide();
-//   console.log(start)
-// console.log(end)
-//   console.log(Difference_In_Days)
-//   console.log(start.value)
-//   console.log(end.value)
+  //   console.log(start)
+  // console.log(end)
+  //   console.log(Difference_In_Days)
+  //   console.log(start.value)
+  //   console.log(end.value)
   var f = new Date(`${start.value} 00:00`)
   // console.log(f)
   // console.log(f.getDate() + 1)
