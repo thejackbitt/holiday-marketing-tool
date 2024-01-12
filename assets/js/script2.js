@@ -6,37 +6,7 @@
 //button listener
 //
 
-// const btn1 = $('#btn1');
-// const input1 = $('input1');
-// git config pull.rebase true
 
-// btn1.on('click' function() {
-
-// });
-
-// function handleSearchFormSubmit(event) {
-//   event.preventDefault();
-
-//   var searchInputVal = document.querySelector('#search-input').value;
-//   var formatInputVal = document.querySelector('#format-input').value;
-
-//   if (!searchInputVal) {
-//     console.error('You need a search input value!');
-//     return;
-//   }
-
-//   // Build the url for sending the user to the second web page
-//   var queryString = './search-results.html?q=' + searchInputVal + '&format=' + formatInputVal;
-
-//   // send user to another page
-//   console.log(queryString)
-//   location.assign(queryString);
-
-//   console.log("ok")
-// }
-
-// searchFormEl.addEventListener('submit', handleSearchFormSubmit);
-// ;
 
 
 const countryArrObj = [
@@ -483,12 +453,10 @@ const countryArrObj = [
 ];
 
 const dropMenu = $('#drop-menu');
-const startDate = $('#start-date');
-const endDate = $('#end-date');
 const countryDropdown = $('#country-names');
 const dateSelector = $('#date-selector')
-var startDate2 = document.querySelector("#start");
-var endDate2 = document.querySelector("#end");
+var start = document.querySelector("#start");
+var end = document.querySelector("#end");
 
 
 var pageCalendar = document.querySelector('#showCalendar');
@@ -535,28 +503,39 @@ function getApi() {
 };
 
 //Calendar
-today = new Date();
-currentMonth = today.getMonth();
-currentYear = today.getFullYear();
-selectYear = document.getElementById("year");
-selectMonth = document.getElementById("month");
+let today = new Date();
+const selectYear = document.getElementById("year");
+const selectMonth = document.getElementById("month");
+const monthAndYear = document.getElementById("monthAndYear");
+var startVal = start.value;
+var startDate = new Date(`${startVal} 00:00`);
+var startMonth = startDate.getMonth();
+var startYear = startDate.getFullYear();
+var endVal = end.value;
+var endDate = new Date(`${endVal} 00:00`);
+var endMonth = endDate.getMonth();
+var endYear = endDate.getFullYear();
+var currentMonth = startDate.getMonth();
+var currentYear = startDate.getFullYear();
 
-months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-monthAndYear = document.getElementById("monthAndYear");
-function showCalendar(startDate, endDate) {
+//= new Date(`${start} 00:00`)
+function showCalendar(startMonth, startYear, endMonth, endYear) {
+//month, year were the parameters
 
-  let firstDay = (new Date(year, month));
+  let firstDay = (new Date(startYear, startMonth));
+  
 
-  tbl = document.getElementById("calendar-body"); // body of the calendar
+ let tbl = document.getElementById("calendar-body"); // body of the calendar
 
   // clearing all previous cells
   tbl.innerHTML = "";
 
   // filing data about month and in the page via DOM.
-  monthAndYear.innerHTML = months[month] + " " + year;
-  selectYear.value = year;
-  selectMonth.value = month;
+  monthAndYear.innerHTML = months[startMonth] + " " + startYear;
+  selectYear.value = startYear;
+  selectMonth.value = startMonth;
 
   // creating all cells
   let date = 1;
@@ -572,7 +551,7 @@ function showCalendar(startDate, endDate) {
         cell.appendChild(cellText);
         row.appendChild(cell);
       }
-      else if (date > daysInMonth(month, year)) {
+      else if (date > daysInMonth(startMonth, startYear)) {
         break;
       }
 
@@ -585,8 +564,8 @@ function showCalendar(startDate, endDate) {
         }
 
         //colors start date
-        var s = new Date(`${startDate2.value} 00:00`)
-        var f = new Date(`${endDate2.value} 00:00`)
+        var s = new Date(`${startVal} 00:00`)
+        var f = new Date(`${endVal} 00:00`)
         if (date === f.getDate() && year === f.getFullYear() && month === f.getMonth() || date === s.getDate() && year === s.getFullYear() && month === s.getMonth()) {
           cell.classList.add("bg-info");
         }
@@ -627,23 +606,23 @@ function daysInMonth(iMonth, iYear) {
 }
 
 generateBtn.on('click', function () {
-  var Difference_In_Time = new Date(endDate2.value).getTime() - new Date(startDate2.value).getTime();
+  var Difference_In_Time = new Date(end.value).getTime() - new Date(start.value).getTime();
   var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
   dateSelector.hide();
-  console.log(startDate2)
-console.log(endDate2)
-  console.log(Difference_In_Days)
-  console.log(startDate2.value)
-  console.log(endDate2.value)
-  var f = new Date(`${startDate2.value} 00:00`)
-  console.log(f)
-  console.log(f.getDate() + 1)
-  console.log(f.getMonth())
-  console.log(f.getYear())
+//   console.log(start)
+// console.log(end)
+//   console.log(Difference_In_Days)
+//   console.log(start.value)
+//   console.log(end.value)
+  var f = new Date(`${start.value} 00:00`)
+  // console.log(f)
+  // console.log(f.getDate() + 1)
+  // console.log(f.getMonth())
+  // console.log(f.getFullYear()())
   pageCalendar.style.display = 'block';
 
 
-  showCalendar(startDate2.value, endDate2.value);
+  showCalendar(startMonth, startYear, endMonth, endYear);
 
 
 
