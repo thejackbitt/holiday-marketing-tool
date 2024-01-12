@@ -470,6 +470,7 @@ for (let i = 0; i < countryArrObj.length; i++) {
 }
 
 const generateBtn = $('#generate-btn');
+const mainForm = $('.formComponent');
 const inputGrp = $('input-group')
 const timeline = $('#timeline');
 const changingContainer = $('#change-container');
@@ -495,6 +496,7 @@ function getApi() {
       console.log(data)
       $('.dropdown').hide();
       generateBtn.hide();
+      mainForm.hide();
       $('#showCalendar').show();
 
       dateSelector.show();
