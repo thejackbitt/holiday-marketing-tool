@@ -505,7 +505,7 @@ function getApi() {
 };
 
 //Calendar
-let today = new Date();
+let today = dayjs();
 // console.log(today)
 const selectYear = document.getElementById("year");
 const selectMonth = document.getElementById("month");
@@ -524,10 +524,11 @@ var currentYear = startDate.getFullYear();
 let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 //= new Date(`${start} 00:00`)
-function showCalendar(startMonth, startYear, endMonth, endYear) {
+function showCalendar(startMonth, startYear) {
   //month, year were the parameters
 
-  let firstDay = (new Date(startYear, startMonth));
+  let firstDay = dayjs(`${startYear}-${startMonth + 1}-01`).day();
+  console.log(firstDay)
 
 
   let tbl = document.getElementById("calendar-body"); // body of the calendar
@@ -536,20 +537,26 @@ function showCalendar(startMonth, startYear, endMonth, endYear) {
   tbl.innerHTML = "";
 
   // filing data about month and in the page via DOM.
+  ////////USE THIS BELOW TO BE ABLE TO HIGHLIGHT WITH MONTHS AS WELL
+  // monthAndYear.innerHTML = months[startMonth] + " " + startYear;
   monthAndYear.innerHTML = months[startMonth] + " " + startYear;
+  console.log(startMonth)
   selectYear.value = startYear;
   selectMonth.value = startMonth;
 
   // creating all cells
   let date = 1;
-  let cellDateStart = startDate.getDate();
-  let cellDateEnd = endDate.getDate();
+  let cellDateStart = startDate.format('DD');
+  console.log(cellDateStart)
+  let cellDateStartMonth = startDate.format('MMM');
+  console.log(cellDateStartMonth)
+  let cellDateEnd = endDate.format("DD");
   for (let i = 0; i < 6; i++) {
    
     // creates a table row
     let row = document.createElement("tr");
 
-    //creating individual cells, filing them up with data.
+    //creating individual cells, filling them up with data.
     for (let j = 0; j < 7; j++) {
       if (i === 0 && j < firstDay) {
        let cell = document.createElement("td");
@@ -564,12 +571,14 @@ function showCalendar(startMonth, startYear, endMonth, endYear) {
       else {
         cell = document.createElement("td");
         cellText = document.createTextNode(date);
-        console.log(date)
+        // console.log(date)
         if (date >= cellDateStart && date <= cellDateEnd) {
           cell.classList.add('bg-warning');
         }
         
-       
+       ////////////////
+        //use Unix Dates!!!!!!!!!!!!!!!!!
+        ///////////
 
         // Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
         // console.log(Difference_In_Days)
@@ -580,15 +589,15 @@ function showCalendar(startMonth, startYear, endMonth, endYear) {
         // }
 
          // color today's date
-        console.log(today.getDate())
-        if (date === today.getDate()) {
+        // console.log(today.date())
+        if (date === today.date()) {
           cell.classList.add("bg-info");
         }
 
         //colors start date
-        var s = new Date(`${startVal} 00:00`)
-        var f = new Date(`${endVal} 00:00`)
-        if (date === f.getDate() && year === f.getFullYear() && month === f.getMonth() || date === s.getDate() && year === s.getFullYear() && month === s.getMonth()) {
+        var s = startDate
+        var f = endDate
+        if (date === f.date() && startYear === f.format('YYYY') && startMonth === f.format('MMM') || date === s.date() && startYear === s.format('YYYY') && startMonth === s.format('MMM')) {
           cell.classList.add("bg-info");
         }
 
@@ -606,43 +615,49 @@ function showCalendar(startMonth, startYear, endMonth, endYear) {
 }
 
 function next() {
-  currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
-  currentMonth = (currentMonth + 1) % 12;
-  showCalendar(currentMonth, currentYear);
+  // console.log(startMonth)
+  // console.log(startYear)
+  startYear = (startMonth === 11) ? startYear + 1 : startYear;
+  startMonth = (startMonth + 1) % 12;
+  showCalendar(startMonth, startYear);
 }
 
 function previous() {
-  currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
-  currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
-  showCalendar(currentMonth, currentYear);
+  startYear = (startMonth === 0) ? startYear - 1 : startYear;
+  startMonth = (startMonth === 0) ? 11 : startMonth - 1;
+  showCalendar(startMonth, startYear);
 }
-
 function jump() {
-  currentYear = parseInt(selectYear.value);
-  currentMonth = parseInt(selectMonth.value);
-  showCalendar(currentMonth, currentYear);
+ startYear = parseInt(selectYear.value);
+  startMonth = parseInt(selectMonth.value);
+  showCalendar(startMonth, startYear);
 }
 
 function daysInMonth(iMonth, iYear) {
-  return 32 - new Date(iYear, iMonth, 32).getDate();
-}
+  // return 32 - new Date(iYear, iMonth, 32).getDate();
+  const lastDayOfMonth = dayjs(`${iYear}-${iMonth + 1}-01`).endOf('month');
+  return lastDayOfMonth.date();
+};
+
 
 generateBtn.on('click', function () {
   
   startVal = start.value;
-  startDate = new Date(`${startVal} 00:00`);
+  // startDate = new Date(`${startVal} 00:00`);
+  startDate = dayjs(startVal);
   console.log(startDate)
-  startMonth = startDate.getMonth();
-  startYear = startDate.getFullYear();
+  startMonth = parseInt(startDate.format('MM')) - 1;
+  console.log(startMonth)
+  startYear = parseInt(startDate.format('YYYY'));
+  console.log(startYear)
   endVal = end.value;
-  endDate = new Date(`${endVal} 00:00`);
+  endDate = dayjs(endVal);
   
-  endMonth = endDate.getMonth();
-  endYear = endDate.getFullYear();
-  currentMonth = startDate.getMonth();
-  currentYear = startDate.getFullYear();
+  endMonth = parseInt(endDate.format('MM')) - 1;
+  endYear = parseInt(endDate.format('YYYY'));
 
   var Difference_In_Time = endDate - startDate;
+  console.log(Difference_In_Time)
   Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
   dateSelector.hide();
 //   console.log(start)
