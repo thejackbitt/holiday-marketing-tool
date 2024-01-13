@@ -510,16 +510,21 @@ let today = dayjs();
 const selectYear = document.getElementById("year");
 const selectMonth = document.getElementById("month");
 const monthAndYear = document.getElementById("monthAndYear");
-var startVal = start.value;
-var startDate = new Date(`${startVal} 00:00`);
-var startMonth = startDate.getMonth();
-var startYear = startDate.getFullYear();
-var endVal = end.value;
-var endDate = new Date(`${endVal} 00:00`);
-var endMonth = endDate.getMonth();
-var endYear = endDate.getFullYear();
-var currentMonth = startDate.getMonth();
-var currentYear = startDate.getFullYear();
+let startVal;
+let startDate;
+let startMonth;
+let startYear;
+let endVal;
+let endDate;
+
+let endMonth;
+let endYear;
+let currentMonth;
+let currentYear;
+let startDateUnix;
+let endDateUnix;
+
+var Difference_In_Days;
 
 let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -551,16 +556,17 @@ function showCalendar(startMonth, startYear) {
   let cellDateStartMonth = startDate.format('MMM');
   console.log(cellDateStartMonth)
   let cellDateEnd = endDate.format("DD");
+  let dateUnix;
   for (let i = 0; i < 6; i++) {
-   
+
     // creates a table row
     let row = document.createElement("tr");
 
     //creating individual cells, filling them up with data.
     for (let j = 0; j < 7; j++) {
       if (i === 0 && j < firstDay) {
-       let cell = document.createElement("td");
-       let cellText = document.createTextNode("");
+        let cell = document.createElement("td");
+        let cellText = document.createTextNode("");
         cell.appendChild(cellText);
         row.appendChild(cell);
       }
@@ -569,26 +575,21 @@ function showCalendar(startMonth, startYear) {
       }
       // && currentYear === today.getFullYear() && currentMonth === today.getMonth())
       else {
+        //TODO 
+        //#1- determine how to add more text in each day block
+        //#2- loop through the  holiday array, convert holiday date to unix and compare to current unix date, and see if any of the holiday days match, if so, print holiday name in day block
         cell = document.createElement("td");
         cellText = document.createTextNode(date);
-        // console.log(date)
-        if (date >= cellDateStart && date <= cellDateEnd) {
+        dateUnix = dayjs(`${startYear}-${startMonth + 1}-${date}`).unix()
+        console.log(dateUnix)
+        startDateUnix = startDate.unix();
+        endDateUnix = endDate.unix();
+        if (dateUnix >= startDateUnix && dateUnix <= endDateUnix) {
           cell.classList.add('bg-warning');
         }
-        
-       ////////////////
-        //use Unix Dates!!!!!!!!!!!!!!!!!
-        ///////////
+        //holiday info array for loop here?
 
-        // Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-        // console.log(Difference_In_Days)
-        // let day = startDate
-        // for (var k = 0; k < Difference_In_Days; k++) {
-        //   cell.classList.add('bg-warning');
-        //   day = day.setDate(day.getDate() +1)
-        // }
-
-         // color today's date
+        // color today's date
         // console.log(today.date())
         if (date === today.date()) {
           cell.classList.add("bg-info");
@@ -628,7 +629,7 @@ function previous() {
   showCalendar(startMonth, startYear);
 }
 function jump() {
- startYear = parseInt(selectYear.value);
+  startYear = parseInt(selectYear.value);
   startMonth = parseInt(selectMonth.value);
   showCalendar(startMonth, startYear);
 }
@@ -641,7 +642,7 @@ function daysInMonth(iMonth, iYear) {
 
 
 generateBtn.on('click', function () {
-  
+
   startVal = start.value;
   // startDate = new Date(`${startVal} 00:00`);
   startDate = dayjs(startVal);
@@ -649,10 +650,12 @@ generateBtn.on('click', function () {
   startMonth = parseInt(startDate.format('MM')) - 1;
   console.log(startMonth)
   startYear = parseInt(startDate.format('YYYY'));
-  console.log(startYear)
+  // console.log(startYear)
   endVal = end.value;
   endDate = dayjs(endVal);
-  
+  startDateUnix = startDate.unix();
+  endDateUnix = endDate.unix();
+
   endMonth = parseInt(endDate.format('MM')) - 1;
   endYear = parseInt(endDate.format('YYYY'));
 
