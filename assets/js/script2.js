@@ -457,8 +457,31 @@ const countryDropdown = $('#country-names');
 const dateSelector = $('#date-selector')
 var start = document.querySelector("#start");
 var end = document.querySelector("#end");
-
-
+let data;
+let today = dayjs();
+// console.log(today)
+const selectYear = document.getElementById("year");
+const selectMonth = document.getElementById("month");
+const monthAndYear = document.getElementById("monthAndYear");
+const generateBtn = $('#generate-btn');
+const mainForm = $('.formComponent');
+const inputGrp = $('input-group')
+const timeline = $('#timeline');
+const changingContainer = $('#change-container');
+let startVal;
+let startDate;
+let startMonth;
+let startYear;
+let endVal;
+let endDate;
+let endMonth;
+let endYear;
+let currentMonth;
+let currentYear;
+let startDateUnix;
+let endDateUnix;
+var Difference_In_Days;
+let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var pageCalendar = document.querySelector('#showCalendar');
 pageCalendar.style.display = 'none';
 
@@ -469,12 +492,6 @@ for (let i = 0; i < countryArrObj.length; i++) {
   // console.log("Added " + countryArrObj[i].name);
 }
 
-const generateBtn = $('#generate-btn');
-const mainForm = $('.formComponent');
-const inputGrp = $('input-group')
-const timeline = $('#timeline');
-const changingContainer = $('#change-container');
-
 function createDropDown() {
   for (let i = 0; i < countryArrObj.length; i++) {
     countryDropdown.append(`<option value="` + countryArrObj[i].countryCode + `">` + countryArrObj[i].name + `</option>)`);
@@ -482,58 +499,29 @@ function createDropDown() {
   }
 };
 
-
-function getApi() {
+async function getApi() {
   var dropDownVal = countryDropdown.val();
-
   var requestUrl = 'https://date.nager.at/api/v3/publicholidays/2024/' + dropDownVal
+  const response = await fetch(requestUrl);
+  data = await response.json();
+  console.log(data);
+  $('.dropdown').hide();
+  generateBtn.hide();
+  mainForm.hide();
+  $('#showCalendar').show();
+  dateSelector.show();
 
-  fetch(requestUrl)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      console.log(data)
-      $('.dropdown').hide();
-      generateBtn.hide();
-      mainForm.hide();
-      $('#showCalendar').show();
 
-      dateSelector.show();
-
-    })
 };
 
 //Calendar
-let today = dayjs();
-// console.log(today)
-const selectYear = document.getElementById("year");
-const selectMonth = document.getElementById("month");
-const monthAndYear = document.getElementById("monthAndYear");
-let startVal;
-let startDate;
-let startMonth;
-let startYear;
-let endVal;
-let endDate;
-
-let endMonth;
-let endYear;
-let currentMonth;
-let currentYear;
-let startDateUnix;
-let endDateUnix;
-
-var Difference_In_Days;
-
-let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 //= new Date(`${start} 00:00`)
-function showCalendar(startMonth, startYear) {
+async function showCalendar(startMonth, startYear) {
   //month, year were the parameters
 
   let firstDay = dayjs(`${startYear}-${startMonth + 1}-01`).day();
-  console.log(firstDay)
+  // console.log(firstDay)
 
 
   let tbl = document.getElementById("calendar-body"); // body of the calendar
@@ -545,18 +533,19 @@ function showCalendar(startMonth, startYear) {
   ////////USE THIS BELOW TO BE ABLE TO HIGHLIGHT WITH MONTHS AS WELL
   // monthAndYear.innerHTML = months[startMonth] + " " + startYear;
   monthAndYear.innerHTML = months[startMonth] + " " + startYear;
-  console.log(startMonth)
+  // console.log(startMonth)
   selectYear.value = startYear;
   selectMonth.value = startMonth;
 
   // creating all cells
   let date = 1;
   let cellDateStart = startDate.format('DD');
-  console.log(cellDateStart)
+  // console.log(cellDateStart)
   let cellDateStartMonth = startDate.format('MMM');
-  console.log(cellDateStartMonth)
+  // console.log(cellDateStartMonth)
   let cellDateEnd = endDate.format("DD");
   let dateUnix;
+  await getApi();
   for (let i = 0; i < 6; i++) {
 
     // creates a table row
@@ -576,18 +565,27 @@ function showCalendar(startMonth, startYear) {
       // && currentYear === today.getFullYear() && currentMonth === today.getMonth())
       else {
         //TODO 
-        //#1- determine how to add more text in each day block
-        //#2- loop through the  holiday array, convert holiday date to unix and compare to current unix date, and see if any of the holiday days match, if so, print holiday name in day block
+        // add styling to each td so that text is block, also need to change the size of each cell so that it is same size regarless of holiday text or not
         cell = document.createElement("td");
         cellText = document.createTextNode(date);
         dateUnix = dayjs(`${startYear}-${startMonth + 1}-${date}`).unix()
-        console.log(dateUnix)
+        // console.log(dateUnix)
         startDateUnix = startDate.unix();
         endDateUnix = endDate.unix();
         if (dateUnix >= startDateUnix && dateUnix <= endDateUnix) {
           cell.classList.add('bg-warning');
         }
-        //holiday info array for loop here?
+        cell.appendChild(cellText);
+        for (var k = 0; k < data.length; k++) {
+          let dataDate = dayjs(data[k].date).unix();
+          if (dataDate === dateUnix) {
+            let cellHolidayText = document.createTextNode(data[k].name);
+            cell.appendChild(cellHolidayText);
+          }
+
+
+        }
+        
 
         // color today's date
         // console.log(today.date())
@@ -602,7 +600,7 @@ function showCalendar(startMonth, startYear) {
           cell.classList.add("bg-info");
         }
 
-        cell.appendChild(cellText);
+
         row.appendChild(cell);
         date++;
       }
@@ -646,9 +644,9 @@ generateBtn.on('click', function () {
   startVal = start.value;
   // startDate = new Date(`${startVal} 00:00`);
   startDate = dayjs(startVal);
-  console.log(startDate)
+  // console.log(startDate)
   startMonth = parseInt(startDate.format('MM')) - 1;
-  console.log(startMonth)
+  // console.log(startMonth)
   startYear = parseInt(startDate.format('YYYY'));
   // console.log(startYear)
   endVal = end.value;
@@ -660,7 +658,7 @@ generateBtn.on('click', function () {
   endYear = parseInt(endDate.format('YYYY'));
 
   var Difference_In_Time = endDate - startDate;
-  console.log(Difference_In_Time)
+  // console.log(Difference_In_Time)
   Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
   dateSelector.hide();
   //   console.log(start)
@@ -675,12 +673,7 @@ generateBtn.on('click', function () {
   // console.log(f.getFullYear()())
   pageCalendar.style.display = 'block';
 
-
-  showCalendar(startMonth, startYear, endMonth, endYear);
-
-
-
-  getApi();
+  showCalendar(startMonth, startYear);
 
 });
 
