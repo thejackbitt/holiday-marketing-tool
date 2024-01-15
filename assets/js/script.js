@@ -78,7 +78,7 @@ function getApi() {
                      console.log(h)
                      console.log(finalData[j]);
                      h++;
-                     return resultsOnPage(finalData[j]) 
+                     return resultsOnPage(finalData[j]);
                })
                .catch(function (error) { console.log(error); });
 
