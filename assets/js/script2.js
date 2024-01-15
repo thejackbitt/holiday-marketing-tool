@@ -472,6 +472,9 @@ const regenerateBtn = $('#regenerateBtn');
 const saveBtn = $('#saveBtn');
 const changePar = $('#change-paragraph');
 const ChangePar2 = $('#change-paragraph2')
+const calendarCard = $('#calendar')
+const holidayText = $('.holiday-text')
+const leftColumnH3 = $('#left-column-text h3');
 let startVal;
 let startDate;
 let startMonth;
@@ -573,7 +576,9 @@ async function showCalendar(startMonth, startYear) {
         for (var k = 0; k < data.length; k++) {
           let dataDate = dayjs(data[k].date).unix();
           if (dataDate === dateUnix) {
-            let cellHolidayText = document.createTextNode(data[k].name);
+            let cellHolidayText = document.createElement('p');
+            cellHolidayText.textContent = data[k].name;
+            cellHolidayText.classList.add('holiday-text');
             cell.appendChild(cellHolidayText);
           }
         }
@@ -668,6 +673,42 @@ regenerateBtn.on('click', function() {
   // location.reload();
 })
 
+//add click function to populated holiday text
+calendarCard.on('click', '.holiday-text', function() {
+  let holidayTextName = $(this).text();
+  console.log(holidayTextName);
+  let holidayTextUnderscored = holidayTextName.replaceAll(' ', '_');
+  console.log(holidayTextUnderscored);
+  let requestUrl = 'https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=' + holidayTextUnderscored + '&srlimit=1&format=json&origin=*'
+
+  getWikiApi(requestUrl);
+});
+
+//add api call from Wikipedia for the holiday clicked on
+async function getWikiApi(requestUrl) {
+  const response = await fetch(requestUrl);
+  const wikiData = await response.json();
+  console.log(wikiData);
+  let resultsArray = wikiData.query.search;
+  resultsOnPage(resultsArray);
+};
+
+function resultsOnPage(myArray) {
+  myArray.forEach(function (item) {
+     let itemTitle = item.title;
+     let itemSnippet = item.snippet;
+     let itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item.title}`);
+     console.log(itemTitle);
+     console.log(itemSnippet);
+     console.log(itemUrl);
+     leftColumnH3.text('Learn More');
+     ChangePar2.html(`   
+     <p class="resultSnippet"><a href="${itemUrl}"  target="_blank" rel="noopener">
+     ${itemSnippet}</a></p><p>Follow the link to learn even more.</p>
+     `)
+  })
+};
+
 // function to retrieve saved data
 
 function retrieveSavedData() {
@@ -675,7 +716,7 @@ function retrieveSavedData() {
   if (retrieveSearchInput) {
     console.log('retrieved search input'), retrieveSearchInput
   }
-}
+};
 
 //only used to extract country names from array
 // function getCountryNames() {
