@@ -475,6 +475,7 @@ const ChangePar2 = $('#change-paragraph2')
 const calendarCard = $('#calendar')
 const holidayText = $('.holiday-text')
 const leftColumnH3 = $('#left-column-text h3');
+const goHome = $('#go-home');
 let startVal;
 let startDate;
 let startMonth;
@@ -772,6 +773,10 @@ $(document).ready(function () {
 // getCountryNames();
 
 //Date selector
+goHome.on('click', function () {
+
+  location.assign('./home.html');
+});
 
 
 
