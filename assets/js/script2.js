@@ -454,7 +454,7 @@ const dateSelector = $('#date-selector')
 var start = document.querySelector("#start");
 var end = document.querySelector("#end");
 let data;
-let today = dayjs();
+const today = dayjs();
 // console.log(today)
 const selectYear = document.getElementById("year");
 const selectMonth = document.getElementById("month");
