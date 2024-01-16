@@ -1,10 +1,5 @@
 //FOR PROJECT.HTML
 
-//TODO
-
-
-
-
 const countryArrObj = [
   {
     "countryCode": "AD",
@@ -718,30 +713,30 @@ function resultsOnPage(myArray) {
   })
 };
 
-// function to save search results in local storage
-function saveSearchData(dropDownVal) {
-  let projectData = JSON.parse(localStorage.getItem('projectData')) || []
-  const exists = projectData.filter( function (project) {
-    return project.country === dropDownVal && project.start === startVal && project.end === endVal
-  })
-
-  if( !exists.length ){
-    const objToSave = { country: dropDownVal, start: startVal, end: endVal, lastVisited: today }
-    projectData.unshift(objToSave)
-
-    if (projectData.length > 4) {
-      projectData.pop();
-    }
-
-    localStorage.setItem('projectData', JSON.stringify(projectData));
-  }
-};
-
 //returns user to HomePage
 goHome.on('click', function () {
   location.assign('./home.html');
 });
 
+// function to save search results in local storage
+//NO LONGER USED, SAVED FOR FUTURE REFERENCE
+// function saveSearchData(dropDownVal) {
+//   let projectData = JSON.parse(localStorage.getItem('projectData')) || []
+//   const exists = projectData.filter( function (project) {
+//     return project.country === dropDownVal && project.start === startVal && project.end === endVal
+//   })
+
+//   if( !exists.length ){
+//     const objToSave = { country: dropDownVal, start: startVal, end: endVal, lastVisited: today }
+//     projectData.unshift(objToSave)
+
+//     if (projectData.length > 4) {
+//       projectData.pop();
+//     }
+
+//     localStorage.setItem('projectData', JSON.stringify(projectData));
+//   }
+// };
 
 
 
