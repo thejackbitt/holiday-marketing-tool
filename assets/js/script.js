@@ -155,5 +155,23 @@ function retrieveSavedData() {
      }
    }
  }
-
+ function retrieveSavedData() {
+   const savedCampaignDataArray = localStorage.getItem('campaignDataArray');
+   const filesList = $('#filesList'); 
+ 
+   if (savedCampaignDataArray) {
+     const campaignDataArray = JSON.parse(savedCampaignDataArray);
+ 
+    campaignDataArray.forEach(campaignData => {
+       const listItem = `<li>
+         <h3>${campaignData[2]}</h3>
+         <p>Start: ${campaignData[0]}, End: ${campaignData[1]}, Last Date Viewed: ${campaignData[3]}</p>
+       </li>`;
+       filesList.append(listItem);
+     });
+ 
+     console.log('Retrieved campaign data array:', campaignDataArray);
+   }
+ }
+ retrieveSavedData()
 getApi();
