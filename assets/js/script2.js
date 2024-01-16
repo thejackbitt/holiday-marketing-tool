@@ -578,11 +578,7 @@ async function showCalendar(startMonth, startYear) {
             cell.appendChild(cellHolidayText);
           }
         }
-
-        // color today's date
-        if (date === today.date()) {
-          cell.classList.add("bg-info");
-        }
+        
         //colors start date
         var s = startDate
         var f = endDate
