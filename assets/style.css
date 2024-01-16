@@ -1,5 +1,6 @@
 :root {
     --new-bs-primary: #2aa75e;
+    --new-bs-primary-25: #2aa75e49;
     --new-bs-primary-text-emphasis: #248b4f;
 }
 
@@ -41,6 +42,15 @@ div,
     font-size: 1.3rem;
 }
 
+td {
+    width: 150px;
+    height: 100px;
+    font-size: 1rem;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
 .btn-primary {
     --bs-btn-color: #fff;
     --bs-btn-bg: var(--new-bs-primary);
@@ -73,6 +83,10 @@ div,
     --bs-btn-disabled-bg: transparent;
     --bs-btn-disabled-border-color: #var(--new-bs-primary);
     --bs-gradient: none;
+}
+
+.bg-warning {
+    background-color: var(--new-bs-primary-25)!important;
 }
 
 header {
@@ -117,10 +131,24 @@ footer {
     transition: all 0.5s ease;
 }
 
+.holiday-text {
+    transition: all 0.2s ease;
+    transform-origin: left;
+}
+
+.holiday-text:hover, .holiday-text:active {
+    transform:scale(110%);
+    color: #6EA8FE;
+}
+
 #regenerateBtn {
     width: 100%;
 }
 
 #saveBtn {
     width: 100%;
+}
+
+#calendar-body {
+    height: 636px;
 }
