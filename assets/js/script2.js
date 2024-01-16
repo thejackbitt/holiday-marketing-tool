@@ -2,9 +2,6 @@
 
 //TODO
 
-
-
-
 const countryArrObj = [
   {
     "countryCode": "AD",
@@ -487,11 +484,51 @@ var Difference_In_Days;
 let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var pageCalendar = document.querySelector('#showCalendar');
 pageCalendar.style.display = 'none';
+const currentUrl = window.location.href;
+const url = new URL(currentUrl);
+const queryParams = new URLSearchParams(url.search);
 
 countryArrObj.unshift(countryArrObj.splice(103, 1)[0])
 for (let i = 0; i < countryArrObj.length; i++) {
   countryDropdown.append(`<option value="` + countryArrObj[i].countryCode + `">` + countryArrObj[i].name + `</option>)`);
-}
+};
+
+function countryLookup(input) {
+  return countryArrObj.find(country => country.name.toUpperCase() === input.toUpperCase())
+};
+
+if (queryParams.get('saveid')) {
+  const saveID = queryParams.get('saveid');
+  const saveFile = localStorage.getItem('campaignDataArray');
+  const campaignData = JSON.parse(saveFile);
+  const sCountry = campaignData[saveID][2]; 
+  countryDropdown.val(countryLookup(sCountry).countryCode);
+  const sStart = campaignData[saveID][0];
+  const sEnd = campaignData[saveID][1];
+  startVal = sStart;
+  startDate = dayjs(startVal);
+  startMonth = parseInt(startDate.format('MM')) - 1;
+  startYear = parseInt(startDate.format('YYYY'));
+  endVal = sEnd;
+  endDate = dayjs(endVal);
+  startDateUnix = startDate.unix();
+  endDateUnix = endDate.unix();
+  endMonth = parseInt(endDate.format('MM')) - 1;
+  endYear = parseInt(endDate.format('YYYY'));
+  var Difference_In_Time = endDate - startDate;
+  Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+  dateSelector.hide();
+  $('.dropdown').hide();
+  generateBtn.hide();
+  mainForm.hide();
+  $('#showCalendar').show();
+  dateSelector.show();
+  leftColumnH3.text('How it works:');
+  changePar.text(`Your campaign targets ${sCountry} and will run for ${Difference_In_Days} days.`);
+  ChangePar2.text(`Find a holiday on the calendar that you would like to know more about. Then click on it to learn more.`)
+  pageCalendar.style.display = 'block';
+  showCalendar(startMonth, startYear);
+};
 
 function createDropDown() {
   for (let i = 0; i < countryArrObj.length; i++) {
@@ -505,6 +542,7 @@ async function getApi() {
   const response = await fetch(requestUrl);
   data = await response.json();
 };
+
 
 //Calendar Build Function
 
@@ -636,7 +674,7 @@ generateBtn.on('click', function () {
 });
 
   // Added this function to retrieve saved data
-  function retrieveSavedData() {
+function retrieveSavedData() {
     const savedCampaignData = localStorage.getItem('campaignData');
     const savedList = $('#filesList');
     if (savedCampaignData) {
@@ -648,7 +686,6 @@ generateBtn.on('click', function () {
       savedList.append(listItem);
     }
   }
-
 
 // Save button click event listener to save the current search
 saveBtn.on('click', function () { 
@@ -741,8 +778,3 @@ function saveSearchData(dropDownVal) {
 goHome.on('click', function () {
   location.assign('./home.html');
 });
-
-
-
-
-
