@@ -577,6 +577,8 @@ async function showCalendar(startMonth, startYear) {
             cellHolidayText.classList.add('holiday-text');
             if (k !== 0 && data[k].name !== data[k-1].name) {
             cell.appendChild(cellHolidayText);
+            } else if (k === 0) {
+              cell.appendChild(cellHolidayText);
             }
           }
         }
