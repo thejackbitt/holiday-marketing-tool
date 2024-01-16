@@ -135,42 +135,32 @@ function getApi() {
       )
 }
 
-// Added this function to retrieve saved data
-function retrieveSavedData() {
-   const filesList = $('#filesList');
-   filesList.empty(); // Clear existing items before appending new ones
-
-   for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key.startsWith('campaignData')) {
-         const savedCampaignData = JSON.parse(localStorage.getItem(key));
-
-         // Display saved data in the filesList ul
-         const listItem = `<li>
-         <h3>${savedCampaignData.selectedCountry}</h3>
-         <p>Start: ${savedCampaignData.startVal}, End: ${savedCampaignData.endVal}</p>
-       </li>`;
-         filesList.append(listItem);
-      }
-   }
-}
 function retrieveSavedData() {
    const savedCampaignDataArray = localStorage.getItem('campaignDataArray');
    const filesList = $('#filesList');
 
    if (savedCampaignDataArray) {
-      const campaignDataArray = JSON.parse(savedCampaignDataArray);
-
-      campaignDataArray.forEach(campaignData => {
-         const listItem = `<li>
+     const campaignDataArray = JSON.parse(savedCampaignDataArray);
+ 
+     campaignDataArray.forEach((campaignData, index) => {
+       const listItem = $(`<li class="list-group-item savedFile" data-id="${index}">
          <h3>${campaignData[2]}</h3>
-         <p>Start: ${campaignData[0]}, End: ${campaignData[1]}, Last Date Viewed: ${campaignData[3]}</p>
-       </li>`;
-         filesList.append(listItem);
-      });
-
-      console.log('Retrieved campaign data array:', campaignDataArray);
+         <p><i>Last Date Viewed: ${campaignData[3]}</i></p>
+       </li>`);
+       filesList.append(listItem);
+     });
+ 
+     console.log('Retrieved campaign data array:', campaignDataArray);
    }
 }
+
 retrieveSavedData();
 getApi();
+
+document.querySelectorAll('li.savedFile').forEach(item => {
+   item.addEventListener('click', function() {
+      let saveId = this.getAttribute('data-id');
+      let url = `project.html?saveid=${encodeURIComponent(saveId)}`;
+      window.location.href = url;
+   });
+});
