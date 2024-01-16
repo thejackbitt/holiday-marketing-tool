@@ -42,7 +42,7 @@ div,
     font-size: 1.3rem;
 }
 
-td {
+#calendar-body tr td {
     width: 150px;
     height: 100px;
     font-size: 1rem;
@@ -151,4 +151,8 @@ footer {
 
 #calendar-body {
     height: 636px;
+}
+
+#year {
+    display: none;
 }
