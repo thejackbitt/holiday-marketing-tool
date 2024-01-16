@@ -455,7 +455,6 @@ var start = document.querySelector("#start");
 var end = document.querySelector("#end");
 let data;
 const today = dayjs();
-// console.log(today)
 const selectYear = document.getElementById("year");
 const selectMonth = document.getElementById("month");
 const monthAndYear = document.getElementById("monthAndYear");
@@ -488,18 +487,15 @@ var Difference_In_Days;
 let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var pageCalendar = document.querySelector('#showCalendar');
 pageCalendar.style.display = 'none';
-var filesList =
 
 countryArrObj.unshift(countryArrObj.splice(103, 1)[0])
 for (let i = 0; i < countryArrObj.length; i++) {
   countryDropdown.append(`<option value="` + countryArrObj[i].countryCode + `">` + countryArrObj[i].name + `</option>)`);
-  // console.log("Added " + countryArrObj[i].name);
 }
 
 function createDropDown() {
   for (let i = 0; i < countryArrObj.length; i++) {
     countryDropdown.append(`<option value="` + countryArrObj[i].countryCode + `">` + countryArrObj[i].name + `</option>)`);
-    // console.log("Added " + countryArrObj[i].name);
   }
 };
 
@@ -508,19 +504,10 @@ async function getApi() {
   var requestUrl = 'https://date.nager.at/api/v3/publicholidays/2024/' + dropDownVal
   const response = await fetch(requestUrl);
   data = await response.json();
-  console.log(data);
-  // $('.dropdown').hide();
-  // generateBtn.hide();
-  // mainForm.hide();
-  // $('#showCalendar').show();
-  // dateSelector.show();
-
-  saveSearchData(dropDownVal);
 };
 
-//Calendar
+//Calendar Build Function
 
-//= new Date(`${start} 00:00`)
 async function showCalendar(startMonth, startYear) {
 
   let firstDay = dayjs(`${startYear}-${startMonth + 1}-01`).day();
@@ -559,8 +546,7 @@ async function showCalendar(startMonth, startYear) {
         break;
       }
       else {
-        //TODO 
-        // add styling to each td so that text is block, also need to change the size of each cell so that it is same size regarless of holiday text or not
+        //builds calendar using td appends to each row(week)
         cell = document.createElement("td");
         cellText = document.createTextNode(date);
         dateUnix = dayjs(`${startYear}-${startMonth + 1}-${date}`).unix()
@@ -570,6 +556,7 @@ async function showCalendar(startMonth, startYear) {
           cell.classList.add('bg-warning');
         }
         cell.appendChild(cellText);
+        //adds holidays to calendar, removes duplicates
         for (var k = 0; k < data.length; k++) {
           let dataDate = dayjs(data[k].date).unix();
           if (dataDate === dateUnix) {
@@ -583,7 +570,6 @@ async function showCalendar(startMonth, startYear) {
             }
           }
         }
-
         //colors start date
         var s = startDate
         var f = endDate
@@ -593,18 +579,13 @@ async function showCalendar(startMonth, startYear) {
         row.appendChild(cell);
         date++;
       }
-
-
     }
-
     tbl.appendChild(row); // appending each row into calendar body.
   }
-
 }
 
+//3 functions below manage navigating the calendar
 function next() {
-  // console.log(startMonth)
-  // console.log(startYear)
   startYear = (startMonth === 11) ? startYear + 1 : startYear;
   startMonth = (startMonth + 1) % 12;
   showCalendar(startMonth, startYear);
@@ -621,15 +602,14 @@ function jump() {
   showCalendar(startMonth, startYear);
 }
 
+//gives the last day in each month
 function daysInMonth(iMonth, iYear) {
-  // return 32 - new Date(iYear, iMonth, 32).getDate();
   const lastDayOfMonth = dayjs(`${iYear}-${iMonth + 1}-01`).endOf('month');
   return lastDayOfMonth.date();
 };
 
-
+//listens to generate button, sets variable values to be sent to next function
 generateBtn.on('click', function () {
-
   startVal = start.value;
   startDate = dayjs(startVal);
   startMonth = parseInt(startDate.format('MM')) - 1;
@@ -653,31 +633,25 @@ generateBtn.on('click', function () {
   ChangePar2.text(`Find a holiday on the calendar that you would like to know more about. Then click on it to learn more.`)
   pageCalendar.style.display = 'block';
   showCalendar(startMonth, startYear);
+});
 
   // Added this function to retrieve saved data
   function retrieveSavedData() {
     const savedCampaignData = localStorage.getItem('campaignData');
     const savedList = $('#filesList');
-
     if (savedCampaignData) {
       const campaignData = JSON.parse(savedCampaignData);
-
-
       start.value = campaignData.startVal;
       end.value = campaignData.endVal;
-
-
       console.log('Retrieved campaign data:', campaignData);
-
-
       const listItem = `<li>${campaignData.selectedCountry} - Start: ${campaignData.startVal}, End: ${campaignData.endVal}</li>`;
       savedList.append(listItem);
     }
+  }
 
 
-// Save button click event listener
-saveBtn.on('click', function () {
-  
+// Save button click event listener to save the current search
+saveBtn.on('click', function () { 
   startVal = start.value;
   startDate = dayjs(startVal);
   startMonth = parseInt(startDate.format('MM')) - 1;
@@ -700,12 +674,7 @@ saveBtn.on('click', function () {
 
 });
 
-});
-  }
-
-
-
-
+//event listener for 'Regenerate Button', resets page so that another wearch can be queried
 regenerateBtn.on('click', function () {
   dateSelector.show();
   $('.dropdown').show();
@@ -717,18 +686,13 @@ regenerateBtn.on('click', function () {
   ChangePar2.text(`Select your target country from the dropdown menu. Then click on the calendar 
   icon in each date selector box to choose the start and end date. If there is a holiday for the selected country
 within the date range it will show up.`)
-  // location.reload();
-})
-
+});
 
 //add click function to populated holiday text
 calendarCard.on('click', '.holiday-text', function () {
   let holidayTextName = $(this).text();
-  console.log(holidayTextName);
   let holidayTextUnderscored = holidayTextName.replaceAll(' ', '_');
-  console.log(holidayTextUnderscored);
   let requestUrl = 'https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=' + holidayTextUnderscored + '&srlimit=1&format=json&origin=*'
-
   getWikiApi(requestUrl);
 });
 
@@ -736,19 +700,16 @@ calendarCard.on('click', '.holiday-text', function () {
 async function getWikiApi(requestUrl) {
   const response = await fetch(requestUrl);
   const wikiData = await response.json();
-  console.log(wikiData);
   let resultsArray = wikiData.query.search;
   resultsOnPage(resultsArray);
 };
 
+//manages data pulled from the getWikiApi function
 function resultsOnPage(myArray) {
   myArray.forEach(function (item) {
     let itemTitle = item.title;
     let itemSnippet = item.snippet;
     let itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item.title}`);
-    console.log(itemTitle);
-    console.log(itemSnippet);
-    console.log(itemUrl);
     leftColumnH3.text('Learn More');
     ChangePar2.html(`   
      <p class="resultSnippet">${itemSnippet}</p><a href="${itemUrl}"  target="_blank" rel="noopener">
@@ -757,31 +718,9 @@ function resultsOnPage(myArray) {
   })
 };
 
-// function retrieveSavedData() {
-//   const savedCampaignData = localStorage.getItem('projectData');
-
-//   if (savedCampaignData) {
-//     const campaignData = JSON.parse(savedCampaignData);
-
-
-//     start.value = campaignData.startVal;
-//     end.value = campaignData.endVal;
-
-//     console.log('Retrieved campaign data:', campaignData);
-//   }
-// };
-
 // function to save search results in local storage
 function saveSearchData(dropDownVal) {
   let projectData = JSON.parse(localStorage.getItem('projectData')) || []
-  
-  
-  // const exists = projectData.find( function (project) {
-  //   if( project.country === dropDownVal && project.start === startVal && project.end === endVal ){
-  //     return project
-  //   }
-  // })
-
   const exists = projectData.filter( function (project) {
     return project.country === dropDownVal && project.start === startVal && project.end === endVal
   })
@@ -798,36 +737,8 @@ function saveSearchData(dropDownVal) {
   }
 };
 
-// Call the function when the page loads
-// $(document).ready(function () {
-//   retrieveSavedData();
-// });
-
-// // Call the function when the page loads
-// $(document).ready(function () {
-//   retrieveSavedData();
-// });
-
-// // Call the function when the page loads
-// $(document).ready(function () {
-//   retrieveSavedData();
-// });
-
-//only used to extract country names from array
-// function getCountryNames() {
-//   let countryNames = []
-//   for (var i = 0; i < countryArrObj.length; i++) {
-
-//       countryNames.push(countryArrObj[i].name)   
-//   }
-//   $('body p').text(countryNames)
-//   console.log(countryNames)
-// }
-// getCountryNames();
-
-//Date selector
+//returns user to HomePage
 goHome.on('click', function () {
-
   location.assign('./home.html');
 });
 
