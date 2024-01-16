@@ -514,7 +514,7 @@ async function getApi() {
   // $('#showCalendar').show();
   // dateSelector.show();
 
-  // saveSearchData();
+  saveSearchData(dropDownVal);
 };
 
 //Calendar
@@ -575,14 +575,14 @@ async function showCalendar(startMonth, startYear) {
             let cellHolidayText = document.createElement('p');
             cellHolidayText.textContent = data[k].name;
             cellHolidayText.classList.add('holiday-text');
-            if (k !== 0 && data[k].name !== data[k-1].name) {
-            cell.appendChild(cellHolidayText);
+            if (k !== 0 && data[k].name !== data[k - 1].name) {
+              cell.appendChild(cellHolidayText);
             } else if (k === 0) {
               cell.appendChild(cellHolidayText);
             }
           }
         }
-        
+
         //colors start date
         var s = startDate
         var f = endDate
@@ -654,31 +654,31 @@ generateBtn.on('click', function () {
   showCalendar(startMonth, startYear);
 
   // Added this function to retrieve saved data
-function retrieveSavedData() {
-  const savedCampaignData = localStorage.getItem('campaignData');
-  const savedList = $('#filesList'); 
+  function retrieveSavedData() {
+    const savedCampaignData = localStorage.getItem('campaignData');
+    const savedList = $('#filesList');
 
-  if (savedCampaignData) {
-    const campaignData = JSON.parse(savedCampaignData);
+    if (savedCampaignData) {
+      const campaignData = JSON.parse(savedCampaignData);
 
-   
-    start.value = campaignData.startVal;
-    end.value = campaignData.endVal;
-   
 
-    console.log('Retrieved campaign data:', campaignData);
+      start.value = campaignData.startVal;
+      end.value = campaignData.endVal;
 
-  
-    const listItem = `<li>${campaignData.selectedCountry} - Start: ${campaignData.startVal}, End: ${campaignData.endVal}</li>`;
-    savedList.append(listItem);
+
+      console.log('Retrieved campaign data:', campaignData);
+
+
+      const listItem = `<li>${campaignData.selectedCountry} - Start: ${campaignData.startVal}, End: ${campaignData.endVal}</li>`;
+      savedList.append(listItem);
+    }
   }
-}
 
 });
 
 
 
-regenerateBtn.on('click', function() {
+regenerateBtn.on('click', function () {
   dateSelector.show();
   $('.dropdown').show();
   generateBtn.show();
@@ -729,47 +729,61 @@ function resultsOnPage(myArray) {
   })
 };
 
-function retrieveSavedData() {
-  const savedCampaignData = localStorage.getItem('campaignData');
+// function retrieveSavedData() {
+//   const savedCampaignData = localStorage.getItem('projectData');
 
-  if (savedCampaignData) {
-    const campaignData = JSON.parse(savedCampaignData);
+//   if (savedCampaignData) {
+//     const campaignData = JSON.parse(savedCampaignData);
 
-    
-    start.value = campaignData.startVal;
-    end.value = campaignData.endVal;
-   
-    console.log('Retrieved campaign data:', campaignData);
+
+//     start.value = campaignData.startVal;
+//     end.value = campaignData.endVal;
+
+//     console.log('Retrieved campaign data:', campaignData);
+//   }
+// };
+
+// function to save search results in local storage
+function saveSearchData(dropDownVal) {
+  let projectData = JSON.parse(localStorage.getItem('projectData')) || []
+  
+  
+  // const exists = projectData.find( function (project) {
+  //   if( project.country === dropDownVal && project.start === startVal && project.end === endVal ){
+  //     return project
+  //   }
+  // })
+
+  const exists = projectData.filter( function (project) {
+    return project.country === dropDownVal && project.start === startVal && project.end === endVal
+  })
+
+  if( !exists.length ){
+    const objToSave = { country: dropDownVal, start: startVal, end: endVal, lastVisited: today }
+    projectData.unshift(objToSave)
+
+    if (projectData.length > 4) {
+      projectData.pop();
+    }
+
+    localStorage.setItem('projectData', JSON.stringify(projectData));
   }
 };
 
-//function to save search results in local storage
-// function saveSearchData() {
-//   if (!savedSearches.find(function (country, start, end) {
-//     return country === dropDownVal, start === startVal, end === endVal;
-//   })) {
-//     savedSearches.unshift(cityInput.val());
-//   }
-//   if (savedSearches.length > 4) {
-//     savedSearches.pop();
-//   }
-//   localStorage.setItem('savedSearches', JSON.stringify(savedSearches));
-// };
-
 // Call the function when the page loads
-$(document).ready(function () {
-  retrieveSavedData();
-});
+// $(document).ready(function () {
+//   retrieveSavedData();
+// });
 
-// Call the function when the page loads
-$(document).ready(function () {
-  retrieveSavedData();
-});
+// // Call the function when the page loads
+// $(document).ready(function () {
+//   retrieveSavedData();
+// });
 
-// Call the function when the page loads
-$(document).ready(function () {
-  retrieveSavedData();
-});
+// // Call the function when the page loads
+// $(document).ready(function () {
+//   retrieveSavedData();
+// });
 
 //only used to extract country names from array
 // function getCountryNames() {
