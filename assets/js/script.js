@@ -9,13 +9,16 @@
 //and saved data will be used to recall the data from fetch
 
 const now = dayjs();
+const requestUrl = 'https://date.nager.at/api/v3/NextPublicHolidaysWorldwide';
 const currentDateDisp = $('#current-date');
 const newProject = $('#new-project');
 const learnMore = $('#learn-more');
 const tableCard = $('#holidayCard');
 const slide = $(".carouselCard");
-const finalData = [''];
+const almostFinalData = [''];
+const finalData = [];
 const countyNameArray = [];
+const wikiDataArray = [];
 var country;
 let j = 0;
 let h = 0;
@@ -37,68 +40,65 @@ learnMore.on('click', function () {
    var holidayName = $('#holiday-OTD');
    var urlBuild = 'en.wikipedia.org/wiki/' + holidayName;
    window.open(urlBuild, '_blank');
-})
+});
 
 //this function is to create and populate the holiday of the day carousel on the home page
 function getApi() {
    //nager api call
-   var requestUrl = 'https://date.nager.at/api/v3/NextPublicHolidaysWorldwide';
+
    fetch(requestUrl)
       .then(function (response) {
          return response.json();
       })
       .then(function (data) {
-         let count = 0;
          for (var i = 0; i < data.length; i++) {
+               const nagerData = data;
+               if (nagerData.length > 5) (nagerData.length = 5);
 
-            const nagerData = data;
-            if (nagerData.length > 5) (nagerData.length = 5);
+               // locate the country name by country code in the country array
+               country = countryArrObj.find(({ countryCode }) => countryCode === data[i].countryCode);
+               countyNameArray.push(country);
 
-            // locate the country name by country code in the country array
-            country = countryArrObj.find(({ countryCode }) => countryCode === data[i].countryCode);
-            countyNameArray.push(country);
-            console.log(countyNameArray);
+               // defining items for the wikipedia api call
+               var url = "https://en.wikipedia.org/w/api.php";
 
-            // defining items for the wikipedia api call
-            var url = "https://en.wikipedia.org/w/api.php";
+               var params = new URLSearchParams({
+                  action: "query",
+                  list: "search",
+                  srsearch: data[i].name + country.name,
+                  srlimit: 1,
+                  format: "json",
+                  origin: '*',
+               });
 
-            var params = new URLSearchParams({
-               action: "query",
-               list: "search",
-               srsearch: data[i].name + country.name,
-               srlimit: 1,
-               format: "json",
-               origin: '*',
-            });
+               getWiki();
 
-            // wikipedia api call
-            fetch(`${url}?${params}`)
-               .then(function (response) { return response.json(); })
-               .then(function (data) {
-                  let resultsArray = data.query.search;
-                  finalData[j] = { ...resultsArray[j], ...nagerData[h] };
-                  finalData[j].country = countyNameArray[h].name;
-                  h++;
-                  return (finalData);
-               })
-               .then(function (item) {
-                  // this function is supposed to take the info from the wiki api call and fill the information into a display element
+               // wikipedia api call
+               async function getWiki() {
+                  const response = await fetch(`${url}?${params}`);
+                  const wikiData = await response.json(); {
+                     wikiDataArray.push(wikiData.query.search);
+                     almostFinalData[j] = { ...wikiDataArray[j][0], ...nagerData[j] };
+                     almostFinalData[j].country = countyNameArray[j].name;
+                     var finalData = almostFinalData[j];
+
+                     // this function takes the info from the wiki api call and puts the information into a display element
                      // creating elements to display the information
-                  var carouselItem = document.createElement('div');
-                  var table = document.createElement('table');
-                  var tableBody = document.createElement('tbody');
-                  var createTableRow = document.createElement('tr');
-                  var tableData = document.createElement('td');
-                  var holidayHeader = document.createElement('h2');
-                  var holidayOrigin = document.createElement('h3');
-                  var wikiInfo = document.createElement('div');
+                     var carouselItem = document.createElement('div');
+                     var table = document.createElement('table');
+                     var tableBody = document.createElement('tbody');
+                     var createTableRow = document.createElement('tr');
+                     var tableData = document.createElement('td');
+                     var holidayHeader = document.createElement('h2');
+                     var holidayOrigin = document.createElement('h3');
+                     var wikiInfo = document.createElement('div');
 
                      // text body and link made from the wiki api data
-                  var itemTitle = item[0].title;
-                  var itemSnippet = item[0].snippet;
-                  var itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item[0].title}`);
+                     var itemTitle = finalData.title;
+                     var itemSnippet = finalData.snippet;
+                     var itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${finalData.title}`);
 
-                  wikiInfo.innerHTML = `<div class="resultItem">
+                     wikiInfo.innerHTML = `<div class="resultItem">
                            <h3 class="resultTitle">
                            <a href="${itemUrl}" target="_blank" rel="noopener">${itemTitle}</a>
                            </h3>
@@ -106,40 +106,39 @@ function getApi() {
                            ${itemSnippet}</a></p>
                            </div>`;
 
-                  // creating the carousel cards
-                  table.setAttribute('class', 'd-block w-100');
-                  if (count === 0) {
-                     carouselItem.setAttribute('class', 'carousel-item active');
-                  } else {
-                     carouselItem.setAttribute('class', 'carousel-item');
-                  };
+                     // creating the carousel cards
+                     table.setAttribute('class', 'd-block w-100');
+                     if (j === 0) {
+                        carouselItem.setAttribute('class', 'carousel-item active');
+                     } else {
+                        carouselItem.setAttribute('class', 'carousel-item');
+                     };
 
-                  // putting the display items into the html
-                  holidayHeader.textContent = item[0].name;
-                  holidayOrigin.textContent = item[0].country;
+                     // putting the display items into the html
+                     holidayHeader.textContent = finalData.name;
+                     holidayOrigin.textContent = finalData.country;
 
-                  tableData.appendChild(holidayHeader);
-                  tableData.appendChild(holidayOrigin);
-                  tableData.appendChild(wikiInfo);
+                     tableData.appendChild(holidayHeader);
+                     tableData.appendChild(holidayOrigin);
+                     tableData.appendChild(wikiInfo);
 
-                  createTableRow.appendChild(tableData);
-                  tableBody.appendChild(createTableRow);
-                  table.appendChild(tableBody);
-                  carouselItem.appendChild(table);
-                  tableCard.append(carouselItem);
-                  count++;
-               })
-               .catch(function (error) { console.log(error); });
-
-            if (i >= 4) return;
+                     createTableRow.appendChild(tableData);
+                     tableBody.appendChild(createTableRow);
+                     table.appendChild(tableBody);
+                     carouselItem.appendChild(table);
+                     tableCard.append(carouselItem);
+                     j++;
+                  }
+               }
          }
-      })
+      }
+      )
 }
 
 function retrieveSavedData() {
    const savedCampaignDataArray = localStorage.getItem('campaignDataArray');
-   const filesList = $('#filesList'); 
- 
+   const filesList = $('#filesList');
+
    if (savedCampaignDataArray) {
      const campaignDataArray = JSON.parse(savedCampaignDataArray);
  
