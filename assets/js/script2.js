@@ -471,6 +471,7 @@ const ChangePar2 = $('#change-paragraph2')
 const calendarCard = $('#calendar')
 const holidayText = $('.holiday-text')
 const leftColumnH3 = $('#left-column-text h3');
+const goHome = $('#go-home');
 let startVal;
 let startDate;
 let startMonth;
@@ -487,7 +488,7 @@ var Difference_In_Days;
 let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var pageCalendar = document.querySelector('#showCalendar');
 pageCalendar.style.display = 'none';
-
+var filesList =
 
 countryArrObj.unshift(countryArrObj.splice(103, 1)[0])
 for (let i = 0; i < countryArrObj.length; i++) {
@@ -672,9 +673,36 @@ generateBtn.on('click', function () {
       const listItem = `<li>${campaignData.selectedCountry} - Start: ${campaignData.startVal}, End: ${campaignData.endVal}</li>`;
       savedList.append(listItem);
     }
-  }
+
+
+// Save button click event listener
+saveBtn.on('click', function () {
+  
+  startVal = start.value;
+  startDate = dayjs(startVal);
+  startMonth = parseInt(startDate.format('MM')) - 1;
+  startYear = parseInt(startDate.format('YYYY'));
+  endVal = end.value;
+  endDate = dayjs(endVal);
+  startDateUnix = startDate.unix();
+  endDateUnix = endDate.unix();
+  endMonth = parseInt(endDate.format('MM')) - 1;
+  endYear = parseInt(endDate.format('YYYY'));
+
+    const lastDateViewed = dayjs().format(); 
+  const campaignData = [startVal, endVal, $('#country-names option:selected').text(), lastDateViewed];
+
+  const existingData = JSON.parse(localStorage.getItem('campaignDataArray')) || [];
+
+  existingData.push(campaignData);
+
+  localStorage.setItem('campaignDataArray', JSON.stringify(existingData));
 
 });
+
+});
+  }
+
 
 
 
@@ -798,6 +826,10 @@ function saveSearchData(dropDownVal) {
 // getCountryNames();
 
 //Date selector
+goHome.on('click', function () {
+
+  location.assign('./home.html');
+});
 
 
 
