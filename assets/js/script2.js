@@ -468,6 +468,13 @@ const mainForm = $('.formComponent');
 const inputGrp = $('input-group')
 const timeline = $('#timeline');
 const changingContainer = $('#change-container');
+const regenerateBtn = $('#regenerateBtn');
+const saveBtn = $('#saveBtn');
+const changePar = $('#change-paragraph');
+const ChangePar2 = $('#change-paragraph2')
+const calendarCard = $('#calendar')
+const holidayText = $('.holiday-text')
+const leftColumnH3 = $('#left-column-text h3');
 let startVal;
 let startDate;
 let startMonth;
@@ -505,11 +512,11 @@ async function getApi() {
   const response = await fetch(requestUrl);
   data = await response.json();
   console.log(data);
-  $('.dropdown').hide();
-  generateBtn.hide();
-  mainForm.hide();
-  $('#showCalendar').show();
-  dateSelector.show();
+  // $('.dropdown').hide();
+  // generateBtn.hide();
+  // mainForm.hide();
+  // $('#showCalendar').show();
+  // dateSelector.show();
 
 
 };
@@ -518,11 +525,8 @@ async function getApi() {
 
 //= new Date(`${start} 00:00`)
 async function showCalendar(startMonth, startYear) {
-  //month, year were the parameters
 
   let firstDay = dayjs(`${startYear}-${startMonth + 1}-01`).day();
-  // console.log(firstDay)
-
 
   let tbl = document.getElementById("calendar-body"); // body of the calendar
 
@@ -530,19 +534,14 @@ async function showCalendar(startMonth, startYear) {
   tbl.innerHTML = "";
 
   // filing data about month and in the page via DOM.
-  ////////USE THIS BELOW TO BE ABLE TO HIGHLIGHT WITH MONTHS AS WELL
-  // monthAndYear.innerHTML = months[startMonth] + " " + startYear;
   monthAndYear.innerHTML = months[startMonth] + " " + startYear;
-  // console.log(startMonth)
   selectYear.value = startYear;
   selectMonth.value = startMonth;
 
   // creating all cells
   let date = 1;
   let cellDateStart = startDate.format('DD');
-  // console.log(cellDateStart)
   let cellDateStartMonth = startDate.format('MMM');
-  // console.log(cellDateStartMonth)
   let cellDateEnd = endDate.format("DD");
   let dateUnix;
   await getApi();
@@ -562,14 +561,12 @@ async function showCalendar(startMonth, startYear) {
       else if (date > daysInMonth(startMonth, startYear)) {
         break;
       }
-      // && currentYear === today.getFullYear() && currentMonth === today.getMonth())
       else {
         //TODO 
         // add styling to each td so that text is block, also need to change the size of each cell so that it is same size regarless of holiday text or not
         cell = document.createElement("td");
         cellText = document.createTextNode(date);
         dateUnix = dayjs(`${startYear}-${startMonth + 1}-${date}`).unix()
-        // console.log(dateUnix)
         startDateUnix = startDate.unix();
         endDateUnix = endDate.unix();
         if (dateUnix >= startDateUnix && dateUnix <= endDateUnix) {
@@ -579,28 +576,23 @@ async function showCalendar(startMonth, startYear) {
         for (var k = 0; k < data.length; k++) {
           let dataDate = dayjs(data[k].date).unix();
           if (dataDate === dateUnix) {
-            let cellHolidayText = document.createTextNode(data[k].name);
+            let cellHolidayText = document.createElement('p');
+            cellHolidayText.textContent = data[k].name;
+            cellHolidayText.classList.add('holiday-text');
             cell.appendChild(cellHolidayText);
           }
-
-
         }
         
-
         // color today's date
-        // console.log(today.date())
         if (date === today.date()) {
           cell.classList.add("bg-info");
         }
-
         //colors start date
         var s = startDate
         var f = endDate
         if (date === f.date() && startYear === f.format('YYYY') && startMonth === f.format('MMM') || date === s.date() && startYear === s.format('YYYY') && startMonth === s.format('MMM')) {
           cell.classList.add("bg-info");
         }
-
-
         row.appendChild(cell);
         date++;
       }
@@ -642,40 +634,80 @@ function daysInMonth(iMonth, iYear) {
 generateBtn.on('click', function () {
 
   startVal = start.value;
-  // startDate = new Date(`${startVal} 00:00`);
   startDate = dayjs(startVal);
-  // console.log(startDate)
   startMonth = parseInt(startDate.format('MM')) - 1;
-  // console.log(startMonth)
   startYear = parseInt(startDate.format('YYYY'));
-  // console.log(startYear)
   endVal = end.value;
   endDate = dayjs(endVal);
   startDateUnix = startDate.unix();
   endDateUnix = endDate.unix();
-
   endMonth = parseInt(endDate.format('MM')) - 1;
   endYear = parseInt(endDate.format('YYYY'));
-
   var Difference_In_Time = endDate - startDate;
-  // console.log(Difference_In_Time)
   Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
   dateSelector.hide();
-  //   console.log(start)
-  // console.log(end)
-  //   console.log(Difference_In_Days)
-  //   console.log(start.value)
-  //   console.log(end.value)
-  var f = new Date(`${start.value} 00:00`)
-  // console.log(f)
-  // console.log(f.getDate() + 1)
-  // console.log(f.getMonth())
-  // console.log(f.getFullYear()())
+  $('.dropdown').hide();
+  generateBtn.hide();
+  mainForm.hide();
+  $('#showCalendar').show();
+  dateSelector.show();
+  changePar.text(`Your campaign targets ${$('#country-names option:selected').text()} and will run for ${Difference_In_Days} days.`);
+  ChangePar2.text(`Find a holiday on the calendar that you would like to know more about. Then click on it to learn more.`)
   pageCalendar.style.display = 'block';
-
   showCalendar(startMonth, startYear);
-
 });
+
+regenerateBtn.on('click', function() {
+  dateSelector.show();
+  $('.dropdown').show();
+  generateBtn.show();
+  mainForm.show();
+  $('#showCalendar').hide();
+  dateSelector.hide();
+  changePar.text(`Select the options below to create a report.`)
+  ChangePar2.text(`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+  et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+  aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+  cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+  culpa qui officia deserunt mollit anim id est laborum.`)
+  // location.reload();
+})
+
+//add click function to populated holiday text
+calendarCard.on('click', '.holiday-text', function() {
+  let holidayTextName = $(this).text();
+  console.log(holidayTextName);
+  let holidayTextUnderscored = holidayTextName.replaceAll(' ', '_');
+  console.log(holidayTextUnderscored);
+  let requestUrl = 'https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=' + holidayTextUnderscored + '&srlimit=1&format=json&origin=*'
+
+  getWikiApi(requestUrl);
+});
+
+//add api call from Wikipedia for the holiday clicked on
+async function getWikiApi(requestUrl) {
+  const response = await fetch(requestUrl);
+  const wikiData = await response.json();
+  console.log(wikiData);
+  let resultsArray = wikiData.query.search;
+  resultsOnPage(resultsArray);
+};
+
+function resultsOnPage(myArray) {
+  myArray.forEach(function (item) {
+     let itemTitle = item.title;
+     let itemSnippet = item.snippet;
+     let itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item.title}`);
+     console.log(itemTitle);
+     console.log(itemSnippet);
+     console.log(itemUrl);
+     leftColumnH3.text('Learn More');
+     ChangePar2.html(`   
+     <p class="resultSnippet"><a href="${itemUrl}"  target="_blank" rel="noopener">
+     ${itemSnippet}</a></p><p>Follow the link to learn even more.</p>
+     `)
+  })
+};
 
 // function to retrieve saved data
 
@@ -684,7 +716,7 @@ function retrieveSavedData() {
   if (retrieveSearchInput) {
     console.log('retrieved search input'), retrieveSearchInput
   }
-}
+};
 
 //only used to extract country names from array
 // function getCountryNames() {
