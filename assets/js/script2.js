@@ -491,7 +491,7 @@ var Difference_In_Days;
 let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var pageCalendar = document.querySelector('#showCalendar');
 pageCalendar.style.display = 'none';
-
+var filesList =
 
 countryArrObj.unshift(countryArrObj.splice(103, 1)[0])
 for (let i = 0; i < countryArrObj.length; i++) {
@@ -656,30 +656,55 @@ generateBtn.on('click', function () {
   pageCalendar.style.display = 'block';
   showCalendar(startMonth, startYear);
 
-  // Added this function to retrieve saved data
+
+
+// Save button click event listener
+saveBtn.on('click', function () {
+  
+  startVal = start.value;
+  startDate = dayjs(startVal);
+  startMonth = parseInt(startDate.format('MM')) - 1;
+  startYear = parseInt(startDate.format('YYYY'));
+  endVal = end.value;
+  endDate = dayjs(endVal);
+  startDateUnix = startDate.unix();
+  endDateUnix = endDate.unix();
+  endMonth = parseInt(endDate.format('MM')) - 1;
+  endYear = parseInt(endDate.format('YYYY'));
+
+ 
+  const campaignData = {
+    startVal,
+    endVal,
+    selectedCountry: $('#country-names option:selected').text(),
+  };
+
+  localStorage.setItem('campaignData', JSON.stringify(campaignData));
+
+});
+
+});
+
+
+// Added this function to retrieve saved data
 function retrieveSavedData() {
   const savedCampaignData = localStorage.getItem('campaignData');
-  const savedList = $('#filesList'); 
+  const filesList = $('#filesList'); 
 
   if (savedCampaignData) {
     const campaignData = JSON.parse(savedCampaignData);
 
    
-    start.value = campaignData.startVal;
-    end.value = campaignData.endVal;
-   
+    const listItem = `<li>
+      <h3>${campaignData.selectedCountry}</h3>
+      <p>Start: ${campaignData.startVal}, End: ${campaignData.endVal}</p>
+    </li>`;
+    filesList.append(listItem);
 
     console.log('Retrieved campaign data:', campaignData);
-
-  
-    const listItem = `<li>${campaignData.selectedCountry} - Start: ${campaignData.startVal}, End: ${campaignData.endVal}</li>`;
-    savedList.append(listItem);
   }
 }
-
-});
-
-
+    
 
 regenerateBtn.on('click', function() {
   dateSelector.show();
@@ -734,29 +759,6 @@ function resultsOnPage(myArray) {
   })
 };
 
-function retrieveSavedData() {
-  const savedCampaignData = localStorage.getItem('campaignData');
-
-  if (savedCampaignData) {
-    const campaignData = JSON.parse(savedCampaignData);
-
-    
-    start.value = campaignData.startVal;
-    end.value = campaignData.endVal;
-   
-    console.log('Retrieved campaign data:', campaignData);
-  }
-};
-
-// Call the function when the page loads
-$(document).ready(function () {
-  retrieveSavedData();
-});
-
-// Call the function when the page loads
-$(document).ready(function () {
-  retrieveSavedData();
-});
 
 // Call the function when the page loads
 $(document).ready(function () {

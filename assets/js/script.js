@@ -136,4 +136,24 @@ function getApi() {
       })
 }
 
+// Added this function to retrieve saved data
+function retrieveSavedData() {
+   const filesList = $('#filesList');
+   filesList.empty(); // Clear existing items before appending new ones
+ 
+   for (let i = 0; i < localStorage.length; i++) {
+     const key = localStorage.key(i);
+     if (key.startsWith('campaignData')) {
+       const savedCampaignData = JSON.parse(localStorage.getItem(key));
+ 
+       // Display saved data in the filesList ul
+       const listItem = `<li>
+         <h3>${savedCampaignData.selectedCountry}</h3>
+         <p>Start: ${savedCampaignData.startVal}, End: ${savedCampaignData.endVal}</p>
+       </li>`;
+       filesList.append(listItem);
+     }
+   }
+ }
+
 getApi();
