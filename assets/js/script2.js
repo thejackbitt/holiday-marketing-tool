@@ -1,10 +1,6 @@
 //FOR PROJECT.HTML
 
 //TODO
-//input field into api fetch address with parameters
-//api address builder
-//button listener
-//
 
 
 
@@ -458,7 +454,7 @@ const dateSelector = $('#date-selector')
 var start = document.querySelector("#start");
 var end = document.querySelector("#end");
 let data;
-let today = dayjs();
+const today = dayjs();
 // console.log(today)
 const selectYear = document.getElementById("year");
 const selectMonth = document.getElementById("month");
@@ -519,7 +515,7 @@ async function getApi() {
   // $('#showCalendar').show();
   // dateSelector.show();
 
-
+  saveSearchData(dropDownVal);
 };
 
 //Calendar
@@ -580,14 +576,14 @@ async function showCalendar(startMonth, startYear) {
             let cellHolidayText = document.createElement('p');
             cellHolidayText.textContent = data[k].name;
             cellHolidayText.classList.add('holiday-text');
-            if (k !== 0 && data[k].name !== data[k-1].name) {
-            cell.appendChild(cellHolidayText);
+            if (k !== 0 && data[k].name !== data[k - 1].name) {
+              cell.appendChild(cellHolidayText);
             } else if (k === 0) {
               cell.appendChild(cellHolidayText);
             }
           }
         }
-        
+
         //colors start date
         var s = startDate
         var f = endDate
@@ -652,11 +648,31 @@ generateBtn.on('click', function () {
   mainForm.hide();
   $('#showCalendar').show();
   dateSelector.show();
+  leftColumnH3.text('How it works:');
   changePar.text(`Your campaign targets ${$('#country-names option:selected').text()} and will run for ${Difference_In_Days} days.`);
   ChangePar2.text(`Find a holiday on the calendar that you would like to know more about. Then click on it to learn more.`)
   pageCalendar.style.display = 'block';
   showCalendar(startMonth, startYear);
 
+  // Added this function to retrieve saved data
+  function retrieveSavedData() {
+    const savedCampaignData = localStorage.getItem('campaignData');
+    const savedList = $('#filesList');
+
+    if (savedCampaignData) {
+      const campaignData = JSON.parse(savedCampaignData);
+
+
+      start.value = campaignData.startVal;
+      end.value = campaignData.endVal;
+
+
+      console.log('Retrieved campaign data:', campaignData);
+
+
+      const listItem = `<li>${campaignData.selectedCountry} - Start: ${campaignData.startVal}, End: ${campaignData.endVal}</li>`;
+      savedList.append(listItem);
+    }
 
 
 // Save button click event listener
@@ -685,48 +701,28 @@ saveBtn.on('click', function () {
 });
 
 });
-
-function retrieveSavedData() {
-  const savedCampaignDataArray = localStorage.getItem('campaignDataArray');
-  const filesList = $('#filesList'); 
-
-  if (savedCampaignDataArray) {
-    const campaignDataArray = JSON.parse(savedCampaignDataArray);
-
-   campaignDataArray.forEach(campaignData => {
-      const listItem = `<li>
-        <h3>${campaignData[2]}</h3>
-        <p>Start: ${campaignData[0]}, End: ${campaignData[1]}, Last Date Viewed: ${campaignData[3]}</p>
-      </li>`;
-      filesList.append(listItem);
-    });
-
-    console.log('Retrieved campaign data array:', campaignDataArray);
   }
-}
 
 
 
 
-regenerateBtn.on('click', function() {
+regenerateBtn.on('click', function () {
   dateSelector.show();
   $('.dropdown').show();
   generateBtn.show();
   mainForm.show();
   $('#showCalendar').hide();
   dateSelector.hide();
-  changePar.text(`Select the options below to create a report.`)
-  ChangePar2.text(`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-  et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-  aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-  cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-  culpa qui officia deserunt mollit anim id est laborum.`)
+  changePar.text(`Use the options on the right to create a report.`)
+  ChangePar2.text(`Select your target country from the dropdown menu. Then click on the calendar 
+  icon in each date selector box to choose the start and end date. If there is a holiday for the selected country
+within the date range it will show up.`)
   // location.reload();
 })
 
 
 //add click function to populated holiday text
-calendarCard.on('click', '.holiday-text', function() {
+calendarCard.on('click', '.holiday-text', function () {
   let holidayTextName = $(this).text();
   console.log(holidayTextName);
   let holidayTextUnderscored = holidayTextName.replaceAll(' ', '_');
@@ -747,25 +743,75 @@ async function getWikiApi(requestUrl) {
 
 function resultsOnPage(myArray) {
   myArray.forEach(function (item) {
-     let itemTitle = item.title;
-     let itemSnippet = item.snippet;
-     let itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item.title}`);
-     console.log(itemTitle);
-     console.log(itemSnippet);
-     console.log(itemUrl);
-     leftColumnH3.text('Learn More');
-     ChangePar2.html(`   
-     <p class="resultSnippet"><a href="${itemUrl}"  target="_blank" rel="noopener">
-     ${itemSnippet}</a></p><p>Follow the link to learn even more.</p>
+    let itemTitle = item.title;
+    let itemSnippet = item.snippet;
+    let itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item.title}`);
+    console.log(itemTitle);
+    console.log(itemSnippet);
+    console.log(itemUrl);
+    leftColumnH3.text('Learn More');
+    ChangePar2.html(`   
+     <p class="resultSnippet">${itemSnippet}</p><a href="${itemUrl}"  target="_blank" rel="noopener">
+     <p>Follow this link to learn even more.</p></a>
      `)
   })
 };
 
+// function retrieveSavedData() {
+//   const savedCampaignData = localStorage.getItem('projectData');
+
+//   if (savedCampaignData) {
+//     const campaignData = JSON.parse(savedCampaignData);
+
+
+//     start.value = campaignData.startVal;
+//     end.value = campaignData.endVal;
+
+//     console.log('Retrieved campaign data:', campaignData);
+//   }
+// };
+
+// function to save search results in local storage
+function saveSearchData(dropDownVal) {
+  let projectData = JSON.parse(localStorage.getItem('projectData')) || []
+  
+  
+  // const exists = projectData.find( function (project) {
+  //   if( project.country === dropDownVal && project.start === startVal && project.end === endVal ){
+  //     return project
+  //   }
+  // })
+
+  const exists = projectData.filter( function (project) {
+    return project.country === dropDownVal && project.start === startVal && project.end === endVal
+  })
+
+  if( !exists.length ){
+    const objToSave = { country: dropDownVal, start: startVal, end: endVal, lastVisited: today }
+    projectData.unshift(objToSave)
+
+    if (projectData.length > 4) {
+      projectData.pop();
+    }
+
+    localStorage.setItem('projectData', JSON.stringify(projectData));
+  }
+};
 
 // Call the function when the page loads
-$(document).ready(function () {
-  retrieveSavedData();
-});
+// $(document).ready(function () {
+//   retrieveSavedData();
+// });
+
+// // Call the function when the page loads
+// $(document).ready(function () {
+//   retrieveSavedData();
+// });
+
+// // Call the function when the page loads
+// $(document).ready(function () {
+//   retrieveSavedData();
+// });
 
 //only used to extract country names from array
 // function getCountryNames() {
