@@ -14,11 +14,12 @@ const newProject = $('#new-project');
 const learnMore = $('#learn-more');
 const tableCard = $('#holidayCard');
 const slide = $(".carouselCard");
-const finalData = ['', '', '', '', ''];
+const finalData = [''];
 const countyNameArray = [];
 var country;
 let j = 0;
 let h = 0;
+
 
 // retrieving the data from local storage
 const savedProjectData = JSON.parse(localStorage.getItem('projectData')) || {};
@@ -48,6 +49,7 @@ function getApi() {
          return response.json();
       })
       .then(function (data) {
+         let count = 0;
          for (var i = 0; i < data.length; i++) {
 
             const nagerData = data;
@@ -83,6 +85,8 @@ function getApi() {
                   return (finalData);
                })
                .then(function (item) {
+
+                  console.log(item[0].name)
                   // creating elements to display the information
                   var carouselItem = document.createElement('div');
                   var table = document.createElement('table');
@@ -93,9 +97,9 @@ function getApi() {
                   var holidayOrigin = document.createElement('h3');
                   var wikiInfo = document.createElement('div');
 
-                  var itemTitle = item.title;
-                  var itemSnippet = item.snippet;
-                  var itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item.title}`);
+                  var itemTitle = item[0].title;
+                  var itemSnippet = item[0].snippet;
+                  var itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item[0].title}`);
 
                   wikiInfo.innerHTML = `<div class="resultItem">
                            <h3 class="resultTitle">
@@ -107,15 +111,15 @@ function getApi() {
 
                   // creating the carousel cards
                   table.setAttribute('class', 'd-block w-100');
-                  if (i === 0) {
+                  if (count === 0) {
                      carouselItem.setAttribute('class', 'carousel-item active');
                   } else {
                      carouselItem.setAttribute('class', 'carousel-item');
                   };
 
                   // putting the display items into the html
-                  holidayHeader.textContent = item.name;
-                  holidayOrigin.textContent = item.country;
+                  holidayHeader.textContent = item[0].name;
+                  holidayOrigin.textContent = item[0].country;
 
                   tableData.appendChild(holidayHeader);
                   tableData.appendChild(holidayOrigin);
@@ -126,17 +130,13 @@ function getApi() {
                   table.appendChild(tableBody);
                   carouselItem.appendChild(table);
                   tableCard.append(carouselItem);
+                  count++;
                })
                .catch(function (error) { console.log(error); });
 
             // this function is supposed to take the info from the wiki api call and fill the information into a display element
             // current issue is that by the time the wikipedia api call gets a response the primary function is finished
             // leaving only the most recently created elements availabel to be accesed by this function
-            function resultsOnPage(item) {
-
-
-
-            }
 
             if (i >= 4) return;
          }
