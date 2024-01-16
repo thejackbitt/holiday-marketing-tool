@@ -655,7 +655,31 @@ generateBtn.on('click', function () {
   ChangePar2.text(`Find a holiday on the calendar that you would like to know more about. Then click on it to learn more.`)
   pageCalendar.style.display = 'block';
   showCalendar(startMonth, startYear);
+
+  // Added this function to retrieve saved data
+function retrieveSavedData() {
+  const savedCampaignData = localStorage.getItem('campaignData');
+  const savedList = $('#filesList'); 
+
+  if (savedCampaignData) {
+    const campaignData = JSON.parse(savedCampaignData);
+
+   
+    start.value = campaignData.startVal;
+    end.value = campaignData.endVal;
+   
+
+    console.log('Retrieved campaign data:', campaignData);
+
+  
+    const listItem = `<li>${campaignData.selectedCountry} - Start: ${campaignData.startVal}, End: ${campaignData.endVal}</li>`;
+    savedList.append(listItem);
+  }
+}
+
 });
+
+
 
 regenerateBtn.on('click', function() {
   dateSelector.show();
@@ -672,6 +696,7 @@ regenerateBtn.on('click', function() {
   culpa qui officia deserunt mollit anim id est laborum.`)
   // location.reload();
 })
+
 
 //add click function to populated holiday text
 calendarCard.on('click', '.holiday-text', function() {
@@ -709,14 +734,34 @@ function resultsOnPage(myArray) {
   })
 };
 
-// function to retrieve saved data
-
 function retrieveSavedData() {
-  var retrieveSearchInput = $.localStorage.getItem('searchInput');
-  if (retrieveSearchInput) {
-    console.log('retrieved search input'), retrieveSearchInput
+  const savedCampaignData = localStorage.getItem('campaignData');
+
+  if (savedCampaignData) {
+    const campaignData = JSON.parse(savedCampaignData);
+
+    
+    start.value = campaignData.startVal;
+    end.value = campaignData.endVal;
+   
+    console.log('Retrieved campaign data:', campaignData);
   }
 };
+
+// Call the function when the page loads
+$(document).ready(function () {
+  retrieveSavedData();
+});
+
+// Call the function when the page loads
+$(document).ready(function () {
+  retrieveSavedData();
+});
+
+// Call the function when the page loads
+$(document).ready(function () {
+  retrieveSavedData();
+});
 
 //only used to extract country names from array
 // function getCountryNames() {
