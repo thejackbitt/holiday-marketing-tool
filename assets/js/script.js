@@ -20,7 +20,6 @@ var country;
 let j = 0;
 let h = 0;
 
-
 // retrieving the data from local storage
 const savedProjectData = JSON.parse(localStorage.getItem('projectData')) || {};
 
@@ -79,15 +78,12 @@ function getApi() {
                   let resultsArray = data.query.search;
                   finalData[j] = { ...resultsArray[j], ...nagerData[h] };
                   finalData[j].country = countyNameArray[h].name;
-                  console.log(h);
-                  console.log(finalData[j]);
                   h++;
                   return (finalData);
                })
                .then(function (item) {
-
-                  console.log(item[0].name)
-                  // creating elements to display the information
+                  // this function is supposed to take the info from the wiki api call and fill the information into a display element
+                     // creating elements to display the information
                   var carouselItem = document.createElement('div');
                   var table = document.createElement('table');
                   var tableBody = document.createElement('tbody');
@@ -97,6 +93,7 @@ function getApi() {
                   var holidayOrigin = document.createElement('h3');
                   var wikiInfo = document.createElement('div');
 
+                     // text body and link made from the wiki api data
                   var itemTitle = item[0].title;
                   var itemSnippet = item[0].snippet;
                   var itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item[0].title}`);
@@ -133,10 +130,6 @@ function getApi() {
                   count++;
                })
                .catch(function (error) { console.log(error); });
-
-            // this function is supposed to take the info from the wiki api call and fill the information into a display element
-            // current issue is that by the time the wikipedia api call gets a response the primary function is finished
-            // leaving only the most recently created elements availabel to be accesed by this function
 
             if (i >= 4) return;
          }
