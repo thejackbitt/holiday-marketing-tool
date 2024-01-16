@@ -518,7 +518,7 @@ async function getApi() {
   // $('#showCalendar').show();
   // dateSelector.show();
 
-
+  saveSearchData();
 };
 
 //Calendar
@@ -582,7 +582,7 @@ async function showCalendar(startMonth, startYear) {
             cell.appendChild(cellHolidayText);
           }
         }
-        
+
         // color today's date
         if (date === today.date()) {
           cell.classList.add("bg-info");
@@ -651,30 +651,29 @@ generateBtn.on('click', function () {
   mainForm.hide();
   $('#showCalendar').show();
   dateSelector.show();
+  leftColumnH3.text('How it works:');
   changePar.text(`Your campaign targets ${$('#country-names option:selected').text()} and will run for ${Difference_In_Days} days.`);
   ChangePar2.text(`Find a holiday on the calendar that you would like to know more about. Then click on it to learn more.`)
   pageCalendar.style.display = 'block';
   showCalendar(startMonth, startYear);
 });
 
-regenerateBtn.on('click', function() {
+regenerateBtn.on('click', function () {
   dateSelector.show();
   $('.dropdown').show();
   generateBtn.show();
   mainForm.show();
   $('#showCalendar').hide();
   dateSelector.hide();
-  changePar.text(`Select the options below to create a report.`)
-  ChangePar2.text(`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-  et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-  aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-  cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-  culpa qui officia deserunt mollit anim id est laborum.`)
+  changePar.text(`Use the options on the right to create a report.`)
+  ChangePar2.text(`Select your target country from the dropdown menu. Then click on the calendar 
+  icon in each date selector box to choose the start and end date. If there is a holiday for the selected country
+within the date range it will show up.`)
   // location.reload();
 })
 
 //add click function to populated holiday text
-calendarCard.on('click', '.holiday-text', function() {
+calendarCard.on('click', '.holiday-text', function () {
   let holidayTextName = $(this).text();
   console.log(holidayTextName);
   let holidayTextUnderscored = holidayTextName.replaceAll(' ', '_');
@@ -695,16 +694,16 @@ async function getWikiApi(requestUrl) {
 
 function resultsOnPage(myArray) {
   myArray.forEach(function (item) {
-     let itemTitle = item.title;
-     let itemSnippet = item.snippet;
-     let itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item.title}`);
-     console.log(itemTitle);
-     console.log(itemSnippet);
-     console.log(itemUrl);
-     leftColumnH3.text('Learn More');
-     ChangePar2.html(`   
-     <p class="resultSnippet"><a href="${itemUrl}"  target="_blank" rel="noopener">
-     ${itemSnippet}</a></p><p>Follow the link to learn even more.</p>
+    let itemTitle = item.title;
+    let itemSnippet = item.snippet;
+    let itemUrl = encodeURI(`https://en.wikipedia.org/wiki/${item.title}`);
+    console.log(itemTitle);
+    console.log(itemSnippet);
+    console.log(itemUrl);
+    leftColumnH3.text('Learn More');
+    ChangePar2.html(`   
+     <p class="resultSnippet">${itemSnippet}</p><a href="${itemUrl}"  target="_blank" rel="noopener">
+     <p>Follow this link to learn even more.</p></a>
      `)
   })
 };
@@ -717,6 +716,20 @@ function retrieveSavedData() {
     console.log('retrieved search input'), retrieveSearchInput
   }
 };
+
+//function to save search results in local storage
+function saveSearchData() {
+  if (!savedSearches.find(function (country, start, end) {
+    return country === dropDownVal, start === startVal, end === endVal;
+  })) {
+    savedSearches.unshift(cityInput.val());
+  }
+  if (savedSearches.length > 4) {
+    savedSearches.pop();
+  }
+  localStorage.setItem('savedSearches', JSON.stringify(savedSearches));
+};
+
 
 //only used to extract country names from array
 // function getCountryNames() {
