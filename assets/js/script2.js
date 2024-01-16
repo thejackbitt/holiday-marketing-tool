@@ -692,6 +692,24 @@ regenerateBtn.on('click', function() {
   // location.reload();
 })
 
+function retrieveSavedData() {
+  const savedCampaignData = localStorage.getItem('campaignData');
+
+  if (savedCampaignData) {
+    const campaignData = JSON.parse(savedCampaignData);
+
+    
+    start.value = campaignData.startVal;
+    end.value = campaignData.endVal;
+   
+    console.log('Retrieved campaign data:', campaignData);
+  }
+}
+
+// Call the function when the page loads
+$(document).ready(function () {
+  retrieveSavedData();
+});
 
 // Call the function when the page loads
 $(document).ready(function () {
