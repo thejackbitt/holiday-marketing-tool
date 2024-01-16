@@ -509,13 +509,7 @@ async function getApi() {
   const response = await fetch(requestUrl);
   data = await response.json();
   console.log(data);
-  // $('.dropdown').hide();
-  // generateBtn.hide();
-  // mainForm.hide();
-  // $('#showCalendar').show();
-  // dateSelector.show();
 
-  saveSearchData(dropDownVal);
 };
 
 //Calendar
@@ -653,6 +647,7 @@ generateBtn.on('click', function () {
   ChangePar2.text(`Find a holiday on the calendar that you would like to know more about. Then click on it to learn more.`)
   pageCalendar.style.display = 'block';
   showCalendar(startMonth, startYear);
+});
 
   // Added this function to retrieve saved data
   function retrieveSavedData() {
@@ -673,6 +668,7 @@ generateBtn.on('click', function () {
       const listItem = `<li>${campaignData.selectedCountry} - Start: ${campaignData.startVal}, End: ${campaignData.endVal}</li>`;
       savedList.append(listItem);
     }
+  }
 
 
 // Save button click event listener
@@ -700,8 +696,8 @@ saveBtn.on('click', function () {
 
 });
 
-});
-  }
+
+  
 
 
 
@@ -718,7 +714,7 @@ regenerateBtn.on('click', function () {
   icon in each date selector box to choose the start and end date. If there is a holiday for the selected country
 within the date range it will show up.`)
   // location.reload();
-})
+});
 
 
 //add click function to populated holiday text
