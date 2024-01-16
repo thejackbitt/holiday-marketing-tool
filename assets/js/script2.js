@@ -672,39 +672,40 @@ saveBtn.on('click', function () {
   endMonth = parseInt(endDate.format('MM')) - 1;
   endYear = parseInt(endDate.format('YYYY'));
 
- 
-  const campaignData = {
-    startVal,
-    endVal,
-    selectedCountry: $('#country-names option:selected').text(),
-  };
+    const lastDateViewed = dayjs().format(); 
+  const campaignData = [startVal, endVal, $('#country-names option:selected').text(), lastDateViewed];
 
-  localStorage.setItem('campaignData', JSON.stringify(campaignData));
+  const existingData = JSON.parse(localStorage.getItem('campaignDataArray')) || [];
 
-});
+  existingData.push(campaignData);
+
+  localStorage.setItem('campaignDataArray', JSON.stringify(existingData));
 
 });
 
+});
 
-// Added this function to retrieve saved data
 function retrieveSavedData() {
-  const savedCampaignData = localStorage.getItem('campaignData');
+  const savedCampaignDataArray = localStorage.getItem('campaignDataArray');
   const filesList = $('#filesList'); 
 
-  if (savedCampaignData) {
-    const campaignData = JSON.parse(savedCampaignData);
+  if (savedCampaignDataArray) {
+    const campaignDataArray = JSON.parse(savedCampaignDataArray);
 
-   
-    const listItem = `<li>
-      <h3>${campaignData.selectedCountry}</h3>
-      <p>Start: ${campaignData.startVal}, End: ${campaignData.endVal}</p>
-    </li>`;
-    filesList.append(listItem);
+   campaignDataArray.forEach(campaignData => {
+      const listItem = `<li>
+        <h3>${campaignData[2]}</h3>
+        <p>Start: ${campaignData[0]}, End: ${campaignData[1]}, Last Date Viewed: ${campaignData[3]}</p>
+      </li>`;
+      filesList.append(listItem);
+    });
 
-    console.log('Retrieved campaign data:', campaignData);
+    console.log('Retrieved campaign data array:', campaignDataArray);
   }
 }
-    
+
+
+
 
 regenerateBtn.on('click', function() {
   dateSelector.show();
