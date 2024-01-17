@@ -7,11 +7,25 @@ For this group project we developed a website that allows a user to see what hol
 
 ## Installation
 
-To run the program you have to open home.html in a web browser.
+To use this application, simply navigate to https://thejackbitt.github.io/group-project-1/.
 
 ## Usage
 
-When the home page is launched the user will find a 'New Project' button and a carousel with upcoming holidays.  The right and left of the carousel can be clicked to cycle through the holidays and the links inside the carousel can be clicked to navigat the the Wikipedia page with information about the holiday.  When the 'New Project' button is pushed the user will be directed to a new page.  There they will find instrusctions on how to use the page, a 'Home' button to return to the previous page, a drop down to select the country where they want to get holidays from, two date selectors representing the start and end date, and a 'Create Report' button.  When a country, start date, and end date are selected the user can push the 'Create Report' button to generate a calendar.  The calendar highlights the range of days selected and lists the holidays celebrated during that time.  The holiday names can be clicked on and on the side there will be a brielf description of the holiday with a link to the Wikipedia page if more information is desired.  There are also two more buttons at the bottom of the page, 'Regenerate Report' and 'Save Report'.  Regenerate restores the page to default so a new country and dates can be selected.  Save takes the input data and displays it on the homepage for future reference along with the time and date that the report was generated.
+When the home page is launched the user will find a 'New Project' button and a carousel with upcoming holidays.  The right and left of the carousel can be clicked to cycle through the holidays and the links inside the carousel can be clicked to navigate the the Wikipedia page with information about the holiday.     
+
+![Homepage Left Column](./assets/images/Homepage_New_Project.png)
+
+When the 'New Project' button is pushed the user will be directed to a new page.  There they will find instrusctions on how to use the page, a 'Home' button to return to the previous page, a drop down to select the country where they want to get holidays from, two date selectors representing the start and end date, and a 'Create Report' button.  When a country, start date, and end date are selected the user can push the 'Create Report' button to generate a calendar.                              
+
+![New Project Page](./assets/images/Project_Page.png)
+
+The calendar highlights the range of days selected and lists the holidays celebrated during that time.  The holiday names can be clicked on and on the side there will be a brielf description of the holiday with a link to the Wikipedia page if more information is desired.                                                             
+
+![Calendar With Date Range and Country Selected](./assets/images/Calendar_Results.png)
+
+There are also two more buttons at the bottom of the page, 'Regenerate Report' and 'Save Report'.  Regenerate restores the page to default so a new country and dates can be selected.  Save takes the input data and displays it on the homepage for future reference along with the time and date that the report was generated.
+
+![Buttons Below Calendar Results](./assets/images/Buttons_Below_Calendar.png)
 
 ## Credits
 
