@@ -141,6 +141,17 @@ footer {
     color: #6EA8FE;
 }
 
+.savedFile {
+    transition: all 0.2s ease;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+.savedFile:hover {
+    background-color: #424242;
+}
+
 #regenerateBtn {
     width: 100%;
 }

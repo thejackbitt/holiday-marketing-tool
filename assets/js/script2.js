@@ -706,7 +706,7 @@ saveBtn.on('click', function () {
   existingData.push(campaignData);
 
   localStorage.setItem('campaignDataArray', JSON.stringify(existingData));
-
+  location.assign('./home.html');
 });
 
 //event listener for 'Regenerate Button', resets page so that another wearch can be queried
