@@ -145,6 +145,12 @@ footer {
     width: 100%;
 }
 
+#saved-searches {
+    padding-left: .8rem;
+    margin-top: .6rem;
+    font-size: 2.5rem;
+}
+
 #saveBtn {
     width: 100%;
 }
