@@ -706,7 +706,7 @@ saveBtn.on('click', function () {
   existingData.push(campaignData);
 
   localStorage.setItem('campaignDataArray', JSON.stringify(existingData));
-  location.assign('./home.html');
+  location.assign('./index.html');
 });
 
 //event listener for 'Regenerate Button', resets page so that another wearch can be queried
@@ -755,6 +755,6 @@ function resultsOnPage(myArray) {
 
 //returns user to HomePage
 goHome.on('click', function () {
-  location.assign('./home.html');
+  location.assign('./index.html');
 });
 
