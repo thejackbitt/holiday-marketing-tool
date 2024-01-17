@@ -20,3 +20,15 @@ Calendar modified from code taken from: https://medium.com/@nitinpatel_20236/cha
 ## Features
 
 The website takes the computers date and time and updates the carousel with upcoming holidays.  There's also buttons to navigate between pages.  the next page has drop downs to select a country and start/end dates.  It can then dynamically build a calendar that updates with different colors to highlight selected days and holidays listed in their respective days.  Clicking on holidays displays a brief description and a link to the holidays Wikipedia page.  The page also has a save function that populated the home page with selected country and start/end days as well as when it was saved.
+
+### Group Members
+
+* Daniel Noonan
+
+* Andrew Helmin
+
+* Travis Parks
+
+* John Bittner
+
+* Jacob Maddaus
