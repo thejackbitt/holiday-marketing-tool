@@ -29,6 +29,7 @@ There are also two more buttons at the bottom of the page, 'Regenerate Report' a
 
 ## Credits
 
+Created by Jack, Jacob, Travis, Andrew, and Dan
 Calendar modified from code taken from: https://medium.com/@nitinpatel_20236/challenge-of-building-a-calendar-with-pure-javascript-a86f1303267d
 
 ## Features
